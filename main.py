@@ -148,6 +148,12 @@ def apply_theme():
     button_toggle_theme.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     close_button.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 
+    # Ensure button text visibility
+    button_select.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
+    button_save.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
+    button_toggle_theme.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
+    close_button.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
+
 # Function to change theme
 def change_theme(event=None):
     global current_theme
@@ -155,45 +161,39 @@ def change_theme(event=None):
     current_theme = themes[selected_theme]
     apply_theme()
 
-    # Adjust button text colors based on theme
-    button_select.configure(fg=current_theme["button_fg"])
-    button_save.configure(fg=current_theme["button_fg"])
-    button_toggle_theme.configure(fg=current_theme["button_fg"])
-    close_button.configure(fg=current_theme["button_fg"])
-
     # Update listbox colors if needed
     file_listbox.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_file_listbox.configure(bg=current_theme["bg"], fg=current_theme["fg"])
 
 # Image display area
 image_label = tk.Label(root, bg=current_theme["bg"], fg=current_theme["fg"])
-image_label.pack(pady=10)
+image_label.grid(row=0, column=0, rowspan=5, padx=10, pady=10)  # Span multiple rows
 
 # Text display and entry area
 text_frame = tk.Frame(root, bg=current_theme["bg"])
-text_frame.pack(pady=10)
+text_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)  # Use sticky for alignment
 
 text_label = tk.Label(text_frame, text="Text:", bg=current_theme["bg"], fg=current_theme["fg"])
-text_label.grid(row=0, column=0, padx=10)
+text_label.grid(row=0, column=0, padx=10, pady=10)
 
 text_box = tk.Text(text_frame, width=60, height=10, bg=current_theme["text_bg"], fg=current_theme["text_fg"])
-text_box.grid(row=0, column=1, padx=10)
+text_box.grid(row=1, column=0, padx=10, pady=10)
 
 # Save button
 button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-button_save.pack(pady=5)
+button_save.grid(row=1, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
 
 # Button to select image
 button_select = tk.Button(root, text="Select Image", command=select_image, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-button_select.pack(pady=5)
+button_select.grid(row=2, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
 
 # Toggle theme button
 button_toggle_theme = tk.Button(root, text="Toggle Theme", command=change_theme, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-button_toggle_theme.pack(pady=5)
+button_toggle_theme.grid(row=3, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
 
 # Close button
 close_button = tk.Button(root, text="Close", command=close, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-close_button.pack(pady=5)
+close_button.grid(row=4, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
 
 # Function to populate listboxes with image and text files
 def populate_listboxes():
@@ -211,11 +211,11 @@ def populate_listboxes():
 
 # Listbox to display images
 file_listbox = tk.Listbox(root, width=30, height=20, bg=current_theme["bg"], fg=current_theme["fg"])
-file_listbox.pack(side=tk.LEFT, padx=10, pady=10)
+file_listbox.grid(row=0, column=2, rowspan=5, padx=10, pady=10, sticky="nsew")  # Span multiple rows and use sticky for alignment
 
 # Listbox to display text files
 text_file_listbox = tk.Listbox(root, width=30, height=20, bg=current_theme["bg"], fg=current_theme["fg"])
-text_file_listbox.pack(side=tk.RIGHT, padx=10, pady=10)
+text_file_listbox.grid(row=0, column=3, rowspan=5, padx=10, pady=10, sticky="nsew")  # Span multiple rows and use sticky for alignment
 
 # Populate listboxes with initial image and text files
 populate_listboxes()
@@ -223,7 +223,7 @@ populate_listboxes()
 # Theme selection combobox
 theme_combobox = ttk.Combobox(root, values=list(themes.keys()))
 theme_combobox.current(2)  # Set default theme
-theme_combobox.pack(pady=10)
+theme_combobox.grid(row=5, column=0, columnspan=4, pady=10)  # Span across all columns
 theme_combobox.bind("<<ComboboxSelected>>", change_theme)
 
 # Apply initial theme colors
