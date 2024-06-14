@@ -205,10 +205,12 @@ text_box.grid(row=1, column=0, padx=10, pady=10)
 
 # Save button
 button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-                        
+button_save.grid(row=1, column=1, sticky="ew", padx=10, pady=10)  # Ensure button_save is properly placed
+
 # Close button
 close_button = tk.Button(root, text="Close", command=close, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 close_button.grid(row=4, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
+
 
 # Function to populate listboxes with image and text files
 def populate_listboxes():
