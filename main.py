@@ -20,8 +20,16 @@ install_packages()
 
 # Function to load and display image
 def load_image(image_path):
+    # Get current screen size
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
     image = Image.open(image_path)
-    image = image.resize((400, 300))  # Resize image as needed
+    # Resize image proportionally to fit within 80% of the screen size
+    max_width = int(screen_width * 0.8)
+    max_height = int(screen_height * 0.8)
+    image.thumbnail((max_width, max_height), Image.ANTIALIAS)
+
     photo = ImageTk.PhotoImage(image)
     image_label.config(image=photo)
     image_label.image = photo  # Keep reference to avoid garbage collection
@@ -133,6 +141,22 @@ themes = {
         "button_bg": "#5ba78a",
         "button_fg": "black",
     },
+    "Lavender": {
+        "bg": "#e6e6fa",
+        "fg": "black",
+        "text_bg": "#d8bfd8",
+        "text_fg": "black",
+        "button_bg": "#d8bfd8",
+        "button_fg": "black",
+    },
+    "Night Sky": {
+        "bg": "#1a1a2e",
+        "fg": "white",
+        "text_bg": "#1a1a2e",
+        "text_fg": "white",
+        "button_bg": "#242943",
+        "button_fg": "white",
+    },
 }
 
 current_theme = themes["Light Theme"]  # Start with Light Theme
@@ -149,10 +173,10 @@ def apply_theme():
     close_button.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 
     # Ensure button text visibility
-    button_select.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
-    button_save.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
-    button_toggle_theme.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
-    close_button.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue"] else "white")
+    button_select.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
+    button_save.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
+    button_toggle_theme.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
+    close_button.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
 
 # Function to change theme
 def change_theme(event=None):
@@ -167,30 +191,20 @@ def change_theme(event=None):
 
 # Image display area
 image_label = tk.Label(root, bg=current_theme["bg"], fg=current_theme["fg"])
-image_label.grid(row=0, column=0, rowspan=5, padx=10, pady=10)  # Span multiple rows
+image_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)  # Span across columns
 
 # Text display and entry area
 text_frame = tk.Frame(root, bg=current_theme["bg"])
-text_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)  # Use sticky for alignment
+text_frame.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=10, pady=10)  # Span across columns and use sticky for alignment
 
 text_label = tk.Label(text_frame, text="Text:", bg=current_theme["bg"], fg=current_theme["fg"])
 text_label.grid(row=0, column=0, padx=10, pady=10)
 
-text_box = tk.Text(text_frame, width=60, height=10, bg=current_theme["text_bg"], fg=current_theme["text_fg"])
+text_box = tk.Text(text_frame, width=80, height=10, bg=current_theme["text_bg"], fg=current_theme["text_fg"])
 text_box.grid(row=1, column=0, padx=10, pady=10)
 
 # Save button
-button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-button_save.grid(row=1, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
-
-# Button to select image
-button_select = tk.Button(root, text="Select Image", command=select_image, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-button_select.grid(row=2, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
-
-# Toggle theme button
-button_toggle_theme = tk.Button(root, text="Toggle Theme", command=change_theme, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-button_toggle_theme.grid(row=3, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
-
+button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg
 # Close button
 close_button = tk.Button(root, text="Close", command=close, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 close_button.grid(row=4, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
