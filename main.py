@@ -6,7 +6,7 @@ import os
 
 # Function to install required packages
 def install_packages():
-    packages = ['pillow', 'numpy', 'matplotlib', 'tkinter']
+    packages = ['pillow', 'numpy', 'matplotlib']
     for package in packages:
         try:
             subprocess.check_call(['pip', 'install', package])
@@ -34,10 +34,11 @@ def load_text(text_path):
     text_box.insert(tk.END, text)
 
 # Function to save edited text to file
-def save_text(text_path):
-    new_text = text_box.get('1.0', tk.END)
-    with open(text_path, 'w') as file:
-        file.write(new_text)
+def save_text():
+    if current_text_file:
+        new_text = text_box.get('1.0', tk.END)
+        with open(current_text_file, 'w') as file:
+            file.write(new_text)
 
 # Function to handle selecting an image and associated text
 def select_image(event=None):
@@ -45,13 +46,12 @@ def select_image(event=None):
     image_path = file_listbox.get(tk.ACTIVE)
     if image_path:
         current_image_path = image_path
-        current_text_file = os.path.splitext(image_path)[0] + '.txt'  # Use os.path here
+        current_text_file = os.path.splitext(image_path)[0] + '.txt'
         load_image(image_path)
         load_text_if_available(os.path.splitext(image_path)[0])
 
 # Function to load text if available
 def load_text_if_available(base_filename):
-    # Check current directory for text file with matching base filename
     text_file = base_filename + '.txt'
     if os.path.exists(text_file):
         load_text(text_file)
@@ -82,22 +82,18 @@ root.geometry("800x600")  # Set initial window size
 # Define colors for different themes
 themes = {
     "Beetlejuice Inspired": {
-        "bg": "#202020",   # Dark gray background
-        "fg": "#80FF00",   # Bright green foreground
-        "text_bg": "#303030",  # Slightly lighter gray for text background
-        "text_fg": "#80FF00",  # Bright green for text foreground
-        "entry_bg": "#303030",  # Same as text background
-        "entry_fg": "#80FF00",  # Same as text foreground
-        "button_bg": "#303030",  # Same as text background
-        "button_fg": "#80FF00",  # Same as text foreground
+        "bg": "#202020",
+        "fg": "#80FF00",
+        "text_bg": "#303030",
+        "text_fg": "#80FF00",
+        "button_bg": "#303030",
+        "button_fg": "#80FF00",
     },
     "Dark Theme": {
         "bg": "black",
         "fg": "white",
         "text_bg": "grey",
         "text_fg": "white",
-        "entry_bg": "grey",
-        "entry_fg": "white",
         "button_bg": "darkgrey",
         "button_fg": "white",
     },
@@ -106,8 +102,6 @@ themes = {
         "fg": "black",
         "text_bg": "white",
         "text_fg": "black",
-        "entry_bg": "white",
-        "entry_fg": "black",
         "button_bg": "lightgrey",
         "button_fg": "black",
     },
@@ -116,8 +110,6 @@ themes = {
         "fg": "black",
         "text_bg": "lightblue",
         "text_fg": "black",
-        "entry_bg": "lightblue",
-        "entry_fg": "black",
         "button_bg": "lightgrey",
         "button_fg": "black",
     },
@@ -131,12 +123,9 @@ def apply_theme():
     image_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_box.configure(bg=current_theme["text_bg"], fg=current_theme["text_fg"])
-    entry_text.configure(bg=current_theme["entry_bg"], fg=current_theme["entry_fg"])
     button_select.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     button_save.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     button_toggle_theme.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
-    file_listbox.configure(bg=current_theme["bg"], fg=current_theme["fg"])
-    text_file_listbox.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     close_button.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 
 # Function to change theme
@@ -171,7 +160,7 @@ text_box = tk.Text(text_frame, width=60, height=10, bg=current_theme["text_bg"],
 text_box.grid(row=0, column=1, padx=10)
 
 # Save button
-button_save = tk.Button(root, text="Save", command=lambda: save_text(current_text_file), bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 button_save.pack(pady=5)
 
 # Button to select image
@@ -183,8 +172,42 @@ button_toggle_theme = tk.Button(root, text="Toggle Theme", command=change_theme,
 button_toggle_theme.pack(pady=5)
 
 # Close button
-def close():
-    root.destroy()
+close_button = tk.Button(root, text="Close", command=close, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+close_button.pack(pady=5)
+
+# Function to populate listboxes with image and text files
+def populate_listboxes():
+    images = list_images_in_directory()
+    text_files = list_text_files_in_directory()
+
+    file_listbox.delete(0, tk.END)
+    text_file_listbox.delete(0, tk.END)
+
+    for image in images:
+        file_listbox.insert(tk.END, image)
+
+    for text_file in text_files:
+        text_file_listbox.insert(tk.END, text_file)
+
+# Listbox to display images
+file_listbox = tk.Listbox(root, width=30, height=20, bg=current_theme["bg"], fg=current_theme["fg"])
+file_listbox.pack(side=tk.LEFT, padx=10, pady=10)
+
+# Listbox to display text files
+text_file_listbox = tk.Listbox(root, width=30, height=20, bg=current_theme["bg"], fg=current_theme["fg"])
+text_file_listbox.pack(side=tk.RIGHT, padx=10, pady=10)
+
+# Populate listboxes with initial image and text files
+populate_listboxes()
+
+# Theme selection combobox
+theme_combobox = ttk.Combobox(root, values=list(themes.keys()))
+theme_combobox.current(2)  # Set default theme
+theme_combobox.pack(pady=10)
+theme_combobox.bind("<<ComboboxSelected>>", change_theme)
+
+# Apply initial theme colors
+apply_theme()
 
 # Run the GUI
 root.mainloop()
