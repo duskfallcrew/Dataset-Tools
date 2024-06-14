@@ -74,6 +74,10 @@ def list_text_files_in_directory():
             text_files.append(file)
     return text_files
 
+# Function to close the application
+def close():
+    root.destroy()
+
 # Create main window
 root = tk.Tk()
 root.title("Image Text Editor")
