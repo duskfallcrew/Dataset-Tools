@@ -204,7 +204,8 @@ text_box = tk.Text(text_frame, width=80, height=10, bg=current_theme["text_bg"],
 text_box.grid(row=1, column=0, padx=10, pady=10)
 
 # Save button
-button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg
+button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+                        
 # Close button
 close_button = tk.Button(root, text="Close", command=close, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 close_button.grid(row=4, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
