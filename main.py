@@ -81,7 +81,7 @@ def close():
 # Create main window
 root = tk.Tk()
 root.title("Image Text Editor")
-root.geometry("800x600")  # Set initial window size
+root.geometry("1200x900")  # Set initial window size
 
 # Define colors for different themes
 themes = {
@@ -115,6 +115,22 @@ themes = {
         "text_bg": "lightblue",
         "text_fg": "black",
         "button_bg": "lightgrey",
+        "button_fg": "black",
+    },
+    "Ocean Blue": {
+        "bg": "#0077be",
+        "fg": "white",
+        "text_bg": "#004c80",
+        "text_fg": "white",
+        "button_bg": "#004c80",
+        "button_fg": "white",
+    },
+    "Mint Green": {
+        "bg": "#8dd3c7",
+        "fg": "black",
+        "text_bg": "#5ba78a",
+        "text_fg": "black",
+        "button_bg": "#5ba78a",
         "button_fg": "black",
     },
 }
