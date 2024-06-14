@@ -2,6 +2,7 @@
 A script that in theory works to help you visualize your dataset, edit text. 
 
 <img width="464" alt="Screenshot 2024-06-14 at 22 09 01" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/f092b6be-a7ef-499a-982c-4e9e9308dcca">
+
 <img width="459" alt="Screenshot 2024-06-14 at 22 00 40" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/52f93ba3-cbc2-4132-bad1-392745cf79d4">
 
 
