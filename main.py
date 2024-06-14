@@ -1,8 +1,9 @@
+import os
 import subprocess
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
-import os
+
 
 # Function to install required packages
 def install_packages():
@@ -51,7 +52,7 @@ def select_image():
                                             filetypes=[("Image Files", "*.jpg *.jpeg *.png")])
     if image_path:
         current_image_path = image_path
-        current_text_file = os.path.splitext(image_path)[0] + '.txt'  # Text file path based on image file
+        current_text_file = os.path.splitext(image_path)[0] + '.txt'  # Use os.path here
         load_image(image_path)
         load_text_if_available(os.path.splitext(image_path)[0])
 
@@ -76,37 +77,89 @@ def list_images_in_directory():
 root = tk.Tk()
 root.title("Image Text Editor")
 
+# Define colors for light and dark themes
+light_theme = {
+    "bg": "white",
+    "fg": "black",
+    "text_bg": "white",
+    "text_fg": "black",
+    "entry_bg": "white",
+    "entry_fg": "black",
+    "button_bg": "lightgrey",
+    "button_fg": "black",
+}
+
+dark_theme = {
+    "bg": "black",
+    "fg": "white",
+    "text_bg": "grey",
+    "text_fg": "white",
+    "entry_bg": "grey",
+    "entry_fg": "white",
+    "button_bg": "darkgrey",
+    "button_fg": "white",
+}
+
+current_theme = light_theme  # Start with light theme
+
+# Function to toggle between light and dark themes
+def toggle_theme():
+    global current_theme
+    if current_theme == light_theme:
+        current_theme = dark_theme
+    else:
+        current_theme = light_theme
+    apply_theme()
+
+# Function to apply current theme colors to widgets
+def apply_theme():
+    root.configure(bg=current_theme["bg"])
+    image_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
+    text_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
+    text_box.configure(bg=current_theme["text_bg"], fg=current_theme["text_fg"])
+    entry_text.configure(bg=current_theme["entry_bg"], fg=current_theme["entry_fg"])
+    button_select.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+    button_add_start.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+    button_add_end.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+
 # Image display area
-image_label = tk.Label(root)
+image_label = tk.Label(root, bg=current_theme["bg"], fg=current_theme["fg"])
 image_label.pack(pady=10)
 
 # Text display and entry area
-text_frame = tk.Frame(root)
+text_frame = tk.Frame(root, bg=current_theme["bg"])
 text_frame.pack(pady=10)
 
-text_label = tk.Label(text_frame, text="Text:")
+text_label = tk.Label(text_frame, text="Text:", bg=current_theme["bg"], fg=current_theme["fg"])
 text_label.grid(row=0, column=0, padx=10)
 
-text_box = tk.Text(text_frame, width=40, height=10)
+text_box = tk.Text(text_frame, width=40, height=10, bg=current_theme["text_bg"], fg=current_theme["text_fg"])
 text_box.grid(row=0, column=1, padx=10)
 
 # Entry for adding new text
-entry_text = tk.Entry(root, width=50)
+entry_text = tk.Entry(root, width=50, bg=current_theme["entry_bg"], fg=current_theme["entry_fg"])
 entry_text.pack(pady=10)
 
 # Buttons for actions
-button_select = tk.Button(root, text="Select Image", command=select_image)
+button_select = tk.Button(root, text="Select Image", command=select_image, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 button_select.pack(pady=5)
 
-button_add_start = tk.Button(root, text="Add to Start", command=add_text)
+button_add_start = tk.Button(root, text="Add to Start", command=add_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 button_add_start.pack(pady=5)
 
-button_add_end = tk.Button(root, text="Add to End", command=add_text)
+button_add_end = tk.Button(root, text="Add to End", command=add_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 button_add_end.pack(pady=5)
+
+# Toggle theme button
+button_toggle_theme = tk.Button(root, text="Toggle Theme", command=toggle_theme, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+button_toggle_theme.pack(pady=5)
 
 # List images in current directory
 images = list_images_in_directory()
 print("Images in current directory:", images)
+
+# Apply initial theme
+apply_theme()
 
 # Run the GUI
 root.mainloop()
