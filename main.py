@@ -167,7 +167,7 @@ def apply_theme():
     image_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_box.configure(bg=current_theme["text_bg"], fg=current_theme["text_fg"])
-    button_select.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+    button_select.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])  # Ensure button_select is properly configured
     button_save.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     button_toggle_theme.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     close_button.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
@@ -204,13 +204,12 @@ text_box = tk.Text(text_frame, width=80, height=10, bg=current_theme["text_bg"],
 text_box.grid(row=1, column=0, padx=10, pady=10)
 
 # Save button
-button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+button_save = tk.Button(root, text="Save", command=save_text, bg=current_theme["button_bg"], fg=current_theme["button_bg`])
 button_save.grid(row=1, column=1, sticky="ew", padx=10, pady=10)  # Ensure button_save is properly placed
 
 # Close button
 close_button = tk.Button(root, text="Close", command=close, bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 close_button.grid(row=4, column=1, sticky="ew", padx=10, pady=10)  # Use sticky for alignment
-
 
 # Function to populate listboxes with image and text files
 def populate_listboxes():
