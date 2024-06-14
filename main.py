@@ -167,16 +167,18 @@ def apply_theme():
     image_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_label.configure(bg=current_theme["bg"], fg=current_theme["fg"])
     text_box.configure(bg=current_theme["text_bg"], fg=current_theme["text_fg"])
-    button_select.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])  # Ensure button_select is properly configured
     button_save.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     button_toggle_theme.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
     close_button.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
 
     # Ensure button text visibility
-    button_select.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
     button_save.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
     button_toggle_theme.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
     close_button.config(fg="black" if current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white")
+
+    # You can remove the following line if button_select is not defined
+    # button_select.configure(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+
 
 # Function to change theme
 def change_theme(event=None):
