@@ -2,6 +2,7 @@ import subprocess
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
+import os
 
 # Function to install required packages
 def install_packages():
@@ -50,9 +51,26 @@ def select_image():
                                             filetypes=[("Image Files", "*.jpg *.jpeg *.png")])
     if image_path:
         current_image_path = image_path
-        current_text_file = os.path.splitext(image_path)[0] + '.txt'
+        current_text_file = os.path.splitext(image_path)[0] + '.txt'  # Text file path based on image file
         load_image(image_path)
-        load_text(current_text_file)
+        load_text_if_available(os.path.splitext(image_path)[0])
+
+# Function to load text if available
+def load_text_if_available(base_filename):
+    # Check current directory for text file with matching base filename
+    text_file = base_filename + '.txt'
+    if os.path.exists(text_file):
+        load_text(text_file)
+    else:
+        text_box.delete('1.0', tk.END)  # Clear text box if no matching text file
+
+# Function to list all image files in the current directory
+def list_images_in_directory():
+    images = []
+    for file in os.listdir():
+        if file.lower().endswith(('.jpg', '.jpeg', '.png')):
+            images.append(file)
+    return images
 
 # Create main window
 root = tk.Tk()
@@ -85,6 +103,10 @@ button_add_start.pack(pady=5)
 
 button_add_end = tk.Button(root, text="Add to End", command=add_text)
 button_add_end.pack(pady=5)
+
+# List images in current directory
+images = list_images_in_directory()
+print("Images in current directory:", images)
 
 # Run the GUI
 root.mainloop()
