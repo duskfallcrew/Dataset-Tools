@@ -183,7 +183,8 @@ button_toggle_theme = tk.Button(root, text="Toggle Theme", command=change_theme,
 button_toggle_theme.pack(pady=5)
 
 # Close button
-def close
+def close():
+    root.destroy()
 
 # Run the GUI
 root.mainloop()
