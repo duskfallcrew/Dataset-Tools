@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import PyQt6
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
     QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox
@@ -56,6 +57,7 @@ class ImageTextEditor(QMainWindow):
         text_layout.addWidget(self.text_label)
 
         self.text_box = QTextEdit()
+        self.text_box.setFixedHeight(200)  # Set fixed height
         text_layout.addWidget(self.text_box)
 
         # Save button
@@ -85,9 +87,14 @@ class ImageTextEditor(QMainWindow):
     def load_image(self, image_path):
         image = Image.open(image_path)
         pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
-        self.image_label.setPixmap(pixmap.scaled(
-            self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatio
-        ))
+        
+        # Resize image proportionally based on percentage
+        percentage = 80  # Adjust percentage as needed
+        width = pixmap.width() * percentage // 100
+        height = pixmap.height() * percentage // 100
+        pixmap = pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
+
+        self.image_label.setPixmap(pixmap)
 
     # Function to load and display text from file
     def load_text(self, text_path):
@@ -98,7 +105,7 @@ class ImageTextEditor(QMainWindow):
 
     # Function to save edited text to file
     def save_text(self):
-        if self.current_text_file:
+        if hasattr(self, 'current_text_file') and self.current_text_file:
             new_text = self.text_box.toPlainText()
             with open(self.current_text_file, 'w') as file:
                 file.write(new_text)
@@ -243,7 +250,7 @@ themes = {
         "button_bg": "#5ba78a",
         "button_fg": "black",
     },
-    "Lavender": {
+        "Lavender": {
         "bg": "#e6e6fa",
         "fg": "black",
         "text_bg": "#d8bfd8",
@@ -257,6 +264,38 @@ themes = {
         "text_bg": "#1a1a2e",
         "text_fg": "white",
         "button_bg": "#242943",
+        "button_fg": "white",
+    },
+    "Fire Red": {
+        "bg": "#8b0000",
+        "fg": "white",
+        "text_bg": "#660000",
+        "text_fg": "white",
+        "button_bg": "#660000",
+        "button_fg": "white",
+    },
+    "Forest Green": {
+        "bg": "#228b22",
+        "fg": "white",
+        "text_bg": "#006400",
+        "text_fg": "white",
+        "button_bg": "#006400",
+        "button_fg": "white",
+    },
+    "Sunset Orange": {
+        "bg": "#ff7f50",
+        "fg": "black",
+        "text_bg": "#ff6347",
+        "text_fg": "black",
+        "button_bg": "#ff6347",
+        "button_fg": "black",
+    },
+    "Pride Month": {
+        "bg": "#fbfbfb",
+        "fg": "black",
+        "text_bg": "#f7931e",
+        "text_fg": "black",
+        "button_bg": "#662d91",
         "button_fg": "white",
     },
 }
