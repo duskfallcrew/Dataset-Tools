@@ -2,14 +2,16 @@ import os
 import subprocess
 import sys
 import requests
-from PIL import Image, ImageQt
-from PyQt6.QtCore import Qt, QSize, QFile, QTextStream
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit,
-    QPushButton, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy, QMessageBox
+    QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
+    QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy
 )
 from PyQt6.QtGui import QPixmap, QIcon
+from PyQt6.QtCore import Qt
+from PIL import Image, ImageQt
 
+# Define the URL for the application icon
+icon_url = "https://raw.githubusercontent.com/duskfallcrew/Dataset-Tools/dev/icon.png"
 
 # Function to install required packages
 def install_packages():
@@ -25,21 +27,12 @@ def install_packages():
 # Install required packages if not already installed
 install_packages()
 
-# Function to download a file from a URL
-def download_file(url, local_path):
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(local_path, 'wb') as file:
-            file.write(response.content)
-        return local_path
-    else:
-        raise Exception(f"Failed to download file from {url}")
-
+# Main window class
 class ImageTextEditor(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Earth & Dusk's Dataset Tools: Image & Caption Editor")
+        self.setWindowTitle("Earth & Dusk: Image & Caption Editor")
         self.setGeometry(100, 100, 1200, 900)
 
         self.current_theme = themes["Light Theme"]  # Start with Light Theme
@@ -63,7 +56,6 @@ class ImageTextEditor(QMainWindow):
         # Image display area
         self.image_label = QLabel(alignment=Qt.AlignmentFlag.AlignCenter)
         self.image_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.image_label.setScaledContents(True)  # Ensure image scales with QLabel
         top_layout.addWidget(self.image_label)
 
         # Text display and entry area
@@ -129,7 +121,7 @@ class ImageTextEditor(QMainWindow):
         image = Image.open(image_path)
         pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
         self.image_label.setPixmap(pixmap.scaled(
-            self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatioByExpanding
+            self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatio
         ))
 
     # Function to load and display text from file
@@ -216,36 +208,44 @@ class ImageTextEditor(QMainWindow):
             color: {self.current_theme["fg"]};
         """
         self.setStyleSheet(style_sheet)
+
         self.image_label.setStyleSheet(style_sheet)
         self.text_label.setStyleSheet(style_sheet)
-
         self.text_box.setStyleSheet(f"""
             background-color: {self.current_theme["text_bg"]};
             color: {self.current_theme["text_fg"]};
         """)
-
         self.button_save.setStyleSheet(f"""
             background-color: {self.current_theme["button_bg"]};
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+            color: {self.current_theme["button_fg"]};
         """)
-
         self.close_button.setStyleSheet(f"""
             background-color: {self.current_theme["button_bg"]};
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+            color: {self.current_theme["button_fg"]};
         """)
-
         self.select_image_button.setStyleSheet(f"""
             background-color: {self.current_theme["button_bg"]};
+            color: {self.current_theme["button_fg"]};
+        """)
+
+        # Ensure button text visibility
+        self.button_save.setStyleSheet(f"""
+            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+        """)
+        self.close_button.setStyleSheet(f"""
+            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+        """)
+        self.select_image_button.setStyleSheet(f"""
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
 
-    # Function to handle changing themes
+# Function to handle changing themes
     def change_theme(self):
         selected_theme = self.theme_combobox.currentText()
         self.current_theme = themes[selected_theme]
         self.apply_theme()
 
-# Define theme colors - Themes not working currently are commented out, will be working on more eventually.
+# Define theme colors
 themes = {
     "Light Theme": {
         "bg": "white",
@@ -343,45 +343,44 @@ themes = {
         "button_bg": "#ff6347",
         "button_fg": "black",
     },
-    #  Commented out the themes that i'm struggling with.
-    #      "Pride Month Wonky": {
-    #           "bg": "#fbfbfb",
-    #           "fg": "black",
-    #           "text_bg": "#f7931e",
-    #           "text_fg": "black",
-    #           "button_bg": "#662d91",
-    #           "button_fg": "white",
-    #       },
-    #       "Pride Dark": {
-    #          "bg": "#230026",
-    #        "fg": "#051720",
-    #           "text_bg": "#14291a",
-    #           "text_fg": "#001b26",
-    #           "button_bg": "#300507",
-    #           "button_fg": "#000326",
-    #       },
-    #       "Pastel v1": {
-    #           "bg": "#cdb4db",
-    #           "fg": "#ffc8dd",
-    #           "text_bg": "#bde0fe",
-    #           "text_fg": "#001b26",
-    #    "button_bg": "#a2d2ff",
-    #           "button_fg": "#f6f1ee",
-    #       },
-    #"Dark Wine": {
-    #    "bg": "#231c35",
-    #    "fg": "#242039",
-    #           "text_bg": "#2a2b47",
-    #           "text_fg": "#484564",
-    #           "button_bg": "#5b5271",
-    #           "button_fg": "#6e5774",
-    #       },
+    "Pride Month Wonky": {
+        "bg": "#fbfbfb",
+        "fg": "black",
+        "text_bg": "#f7931e",
+        "text_fg": "black",
+        "button_bg": "#662d91",
+        "button_fg": "white",
+    },
+    "Pride Dark": {
+        "bg": "#230026",
+        "fg": "#051720",
+        "text_bg": "#14291a",
+        "text_fg": "#001b26",
+        "button_bg": "#300507",
+        "button_fg": "#000326",
+    },
+    "Pastel": {
+        "bg": "#cdb4db",
+        "fg": "#ffc8dd",
+        "text_bg": "#bde0fe",
+        "text_fg": "#001b26",
+        "button_bg": "#a2d2ff",
+        "button_fg": "#f6f1ee",
+    },
+    "Dark Wine": {
+        "bg": "#231c35",
+        "fg": "#242039",
+        "text_bg": "#2a2b47",
+        "text_fg": "#484564",
+        "button_bg": "#5b5271",
+        "button_fg": "#6e5774",
+    },
 }
-# Main exection just lets you know it's the main program, and that we're going to close it if you don't pay us money - I'm kidding.
+
 # Main execution
 if __name__ == "__main__":
-    import sys
     app = QApplication(sys.argv)
     window = ImageTextEditor()
     window.show()
     sys.exit(app.exec())
+
