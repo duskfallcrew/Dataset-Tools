@@ -11,7 +11,7 @@ from PIL import Image, ImageQt
 
 # Function to install required packages
 def install_packages():
-    packages = ['pillow', 'numpy', 'matplotlib']
+    packages = ['pillow', 'numpy', 'matplotlib', 'PyQt6']
     for package in packages:
         try:
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
