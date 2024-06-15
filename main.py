@@ -32,7 +32,7 @@ class ImageTextEditor(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Earth & Dusk: Image & Caption Editor")
+        self.setWindowTitle("Earth & Dusk's Dataset Tools: Image & Caption Editor")
         self.setGeometry(100, 100, 1200, 900)
 
         self.current_theme = themes["Light Theme"]  # Start with Light Theme
@@ -118,11 +118,11 @@ class ImageTextEditor(QMainWindow):
 
     # Function to load and display image
     def load_image(self, image_path):
-        image = Image.open(image_path)
-        pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
-        self.image_label.setPixmap(pixmap.scaled(
-            self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatio
-        ))
+    image = Image.open(image_path)
+    pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
+    self.image_label.setPixmap(pixmap.scaled(
+        self.image_label.size(), Qt.AspectRatioMode.AspectFit
+    ))
 
     # Function to load and display text from file
     def load_text(self, text_path):
@@ -343,38 +343,38 @@ themes = {
         "button_bg": "#ff6347",
         "button_fg": "black",
     },
-    "Pride Month Wonky": {
-        "bg": "#fbfbfb",
-        "fg": "black",
-        "text_bg": "#f7931e",
-        "text_fg": "black",
-        "button_bg": "#662d91",
-        "button_fg": "white",
-    },
-    "Pride Dark": {
-        "bg": "#230026",
-        "fg": "#051720",
-        "text_bg": "#14291a",
-        "text_fg": "#001b26",
-        "button_bg": "#300507",
-        "button_fg": "#000326",
-    },
-    "Pastel": {
-        "bg": "#cdb4db",
-        "fg": "#ffc8dd",
-        "text_bg": "#bde0fe",
-        "text_fg": "#001b26",
-        "button_bg": "#a2d2ff",
-        "button_fg": "#f6f1ee",
-    },
-    "Dark Wine": {
-        "bg": "#231c35",
-        "fg": "#242039",
-        "text_bg": "#2a2b47",
-        "text_fg": "#484564",
-        "button_bg": "#5b5271",
-        "button_fg": "#6e5774",
-    },
+   # "Pride Month Wonky": {
+      #  "bg": "#fbfbfb",
+       # "fg": "black",
+       # "text_bg": "#f7931e",
+       # "text_fg": "black",
+       # "button_bg": "#662d91",
+      #  "button_fg": "white",
+  #  },
+   #   "Pride Dark": {
+       #   "bg": "#230026",
+        #  "fg": "#051720",
+       #   "text_bg": "#14291a",
+      #   #   "text_fg": "#001b26",
+     #     "button_bg": "#300507",
+      #    "button_fg": "#000326",
+   #   },
+  #    "Pastel v1": {
+     #     "bg": "#cdb4db",
+    #      "fg": "#ffc8dd",
+     #     "text_bg": "#bde0fe",
+    #      "text_fg": "#001b26",
+  #        "button_bg": "#a2d2ff",
+    #      "button_fg": "#f6f1ee",
+  #    },
+  #    "Dark Wine": {
+     #     "bg": "#231c35",
+      #    "fg": "#242039",
+   #       "text_bg": "#2a2b47",
+  #        "text_fg": "#484564",
+   #       "button_bg": "#5b5271",
+ #         "button_fg": "#6e5774",
+  #    },
 }
 
 # Main execution
