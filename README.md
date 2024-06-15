@@ -1,37 +1,85 @@
-# Dataset-Tools
-A script that in theory works to help you visualize your dataset, edit text. 
+# Dataset-Tools: Enhancing Dataset Visualization and Text Editing
+Dataset-Tools is a versatile script designed to assist in visualizing datasets and editing associated text files. Developed using PyQt6, it provides an intuitive graphical interface for managing images and their corresponding annotations. Inspired by tools within the Civitai community, this project aims to empower users in enhancing their dataset management capabilities.
 
-A script that in theory works to help you visualize your dataset, edit text. I'm aware i'm not the only one to make something like this, and i don't have anyone's code to go by other than what GPT gave me.  I am inspired by clearly my peers around me in Civitai, and i'm just trying to learn how to make tools to help the community!
+You're more than welcome to help develop this tool, I am not really a programmer, I am aware of this - I am doing tiny things with Chat GPT to further help my community! 
 
-## Overview of themes
+## How to Use Dataset-Tools
+### Launching the Application
+
+Ensure Python is installed on your system.
+Clone or download the Dataset-Tools repository from GitHub.
+Setting Up Environment
+
+### Install necessary dependencies using pip:
+Copy code
+pip install PyQt6 Pillow
+Running the Application
+
+### Navigate to the directory where main.py is located.
+Run the application using Python:
+css
+Copy code
+python main.py
+### User Interface Overview
+
+#### Main Window: The application window opens with options to view images, edit associated text, and select themes.
+Image Display: Images are displayed in the top section of the window with options for scaling and centering.
+Text Editor: Below the image, there's a text box for editing and saving text associated with the selected image.
+Listboxes: Lists images and text files available in the current directory.
+Buttons: Includes "Save" to save edited text, "Close" to exit the application gracefully, and "Select Image" to pick an image for editing.
+Managing Images and Text
+
+#### Selecting Images: Click on an image in the listbox or gallery to display it in the main window.
+Editing Text: Edit the text in the text box. Use the "Save" button to save changes to the associated text file.
+Changing Themes
+
+#### Theme Selection: Use the dropdown menu labeled "Theme Selection" to choose from available themes.
+Applying Themes: Themes change the background, text colors, and button styles to suit different preferences.
+Customizing Themes (Advanced)
+
+#### Editing Themes: Modify or add themes in the themes dictionary within the main.py file. Each theme consists of background color (bg), foreground color (fg), text background (text_bg), text foreground (text_fg), button background (button_bg), and button foreground (button_fg).
+
+
+## Overview of Themes
+Dataset-Tools offers a range of themes to customize the interface according to user preferences:
 
 Beetlejuice Inspired
-
 Light Theme
-
 Dark Theme
-
 Pastel V2
-
-There was a Pastel V1, but it broke.
-
-There are SEVERAL commented themes in the code, i'm fixing text on those later.
-
 Night Sky
-
 Fire Red
-
 Sunset Orange
-
 Lavender
-
 Ocean Blue
-
-Mint 
-
+Mint
 Forest Green
+Some themes, like Pastel V1, are currently disabled due to issues with text colors, which are being addressed in ongoing development.
 
-If you'd like other color themes added, let me know - they're not hard to impliment, they're just hex codes and HTML/CSS - it's just the commented out ones have some issues I need to sort out with text colors - Later on i'll fix that, just I wanna get this pushed to main!
+## Key Features
+Graphical User Interface (GUI): Designed initially with Tkinter and later migrated to PyQt6 for improved functionality and aesthetics.
+Image Gallery: Allows for browsing and selection of images within the dataset.
+Text Editing: Supports real-time editing and saving of associated text files.
+Theme Customization: Choose from various predefined themes to personalize the application's appearance.
+## Future Developments
+Educational Resources: Planned video tutorials and comprehensive text guides to aid users in navigating Dataset-Tools effectively.
+Enhanced Theme Functionality: Ongoing improvements to themes, focusing on legibility and aesthetic appeal across different datasets.
+Deployment and Testing: Targeting broader compatibility across operating systems and screen resolutions to optimize user experience.
+## About the Creator
+Dataset-Tools is developed by the Duskfall Portal Crew, a diverse system navigating life with DID, ADHD, Autism, and CPTSD. Our motivation stems from leveraging AI to promote inclusivity and mental health awareness. Join us in exploring identity and creative expression through technology.
+
+## Join Our Community
+Website: Earth & Dusk Portal
+Discord: Join our Discord
+Backups: Hugging Face
+Support Us
+Send a Pizza: Buy us a pizza
+Subreddit: Reddit Community
+Thank you for supporting us on our journey and contributing to the Earth and Dusk community.
+
+## Credits
+ChatGPT 3.5 & 4o: Powering innovative solutions and creative endeavors.
+Canvas icons created by Freepik - Flaticon: Enhancing visual appeal and functionality.
 
 ## Sample Images 
 Here you can see the themes and gui overlook.
