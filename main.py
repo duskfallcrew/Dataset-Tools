@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import requests
+import PyQt6
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
     QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy
@@ -27,6 +28,16 @@ def install_packages():
 # Install required packages if not already installed
 install_packages()
 
+# Function to download a file from a URL
+def download_file(url, local_path):
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(local_path, 'wb') as file:
+            file.write(response.content)
+        return local_path
+    else:
+        raise Exception(f"Failed to download file from {url}")
+
 # Main window class
 class ImageTextEditor(QMainWindow):
     def __init__(self):
@@ -36,7 +47,9 @@ class ImageTextEditor(QMainWindow):
         self.setGeometry(100, 100, 1200, 900)
 
         self.current_theme = themes["Light Theme"]  # Start with Light Theme
-
+ # Set window icon
+        self.setWindowIcon(QIcon("https://raw.githubusercontent.com/duskfallcrew/Dataset-Tools/dev/icon.png"))
+        
         self.init_ui()
         self.populate_listboxes()
         self.populate_image_gallery()  # Populate image gallery
@@ -118,11 +131,11 @@ class ImageTextEditor(QMainWindow):
 
     # Function to load and display image
     def load_image(self, image_path):
-    image = Image.open(image_path)
-    pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
-    self.image_label.setPixmap(pixmap.scaled(
-        self.image_label.size(), Qt.AspectRatioMode.AspectFit
-    ))
+        image = Image.open(image_path)
+        pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
+        self.image_label.setPixmap(pixmap.scaled(
+            self.image_label.size(), Qt.AspectRatioMode.AspectFit
+        ))
 
     # Function to load and display text from file
     def load_text(self, text_path):
@@ -227,8 +240,6 @@ class ImageTextEditor(QMainWindow):
             background-color: {self.current_theme["button_bg"]};
             color: {self.current_theme["button_fg"]};
         """)
-
-        # Ensure button text visibility
         self.button_save.setStyleSheet(f"""
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
@@ -239,7 +250,7 @@ class ImageTextEditor(QMainWindow):
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
 
-# Function to handle changing themes
+    # Function to handle changing themes
     def change_theme(self):
         selected_theme = self.theme_combobox.currentText()
         self.current_theme = themes[selected_theme]
@@ -343,38 +354,39 @@ themes = {
         "button_bg": "#ff6347",
         "button_fg": "black",
     },
-   # "Pride Month Wonky": {
-      #  "bg": "#fbfbfb",
-       # "fg": "black",
-       # "text_bg": "#f7931e",
-       # "text_fg": "black",
-       # "button_bg": "#662d91",
-      #  "button_fg": "white",
-  #  },
-   #   "Pride Dark": {
-       #   "bg": "#230026",
-        #  "fg": "#051720",
-       #   "text_bg": "#14291a",
-      #   #   "text_fg": "#001b26",
-     #     "button_bg": "#300507",
-      #    "button_fg": "#000326",
-   #   },
-  #    "Pastel v1": {
-     #     "bg": "#cdb4db",
-    #      "fg": "#ffc8dd",
-     #     "text_bg": "#bde0fe",
-    #      "text_fg": "#001b26",
-  #        "button_bg": "#a2d2ff",
-    #      "button_fg": "#f6f1ee",
-  #    },
-  #    "Dark Wine": {
-     #     "bg": "#231c35",
-      #    "fg": "#242039",
-   #       "text_bg": "#2a2b47",
-  #        "text_fg": "#484564",
-   #       "button_bg": "#5b5271",
- #         "button_fg": "#6e5774",
-  #    },
+    #  Commented out the themes that i'm struggling with.
+    #      "Pride Month Wonky": {
+    #           "bg": "#fbfbfb",
+    #           "fg": "black",
+    #           "text_bg": "#f7931e",
+    #           "text_fg": "black",
+    #           "button_bg": "#662d91",
+    #           "button_fg": "white",
+    #       },
+    #       "Pride Dark": {
+    #          "bg": "#230026",
+    #        "fg": "#051720",
+    #           "text_bg": "#14291a",
+    #           "text_fg": "#001b26",
+    #           "button_bg": "#300507",
+    #           "button_fg": "#000326",
+    #       },
+    #       "Pastel v1": {
+    #           "bg": "#cdb4db",
+    #           "fg": "#ffc8dd",
+    #           "text_bg": "#bde0fe",
+    #           "text_fg": "#001b26",
+    #    "button_bg": "#a2d2ff",
+    #           "button_fg": "#f6f1ee",
+    #       },
+    #"Dark Wine": {
+    #    "bg": "#231c35",
+    #    "fg": "#242039",
+    #           "text_bg": "#2a2b47",
+    #           "text_fg": "#484564",
+    #           "button_bg": "#5b5271",
+    #           "button_fg": "#6e5774",
+    #       },
 }
 
 # Main execution
