@@ -242,7 +242,6 @@ def apply_theme(self):
         color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
     """)
 
-
     # Function to handle changing themes
     def change_theme(self):
         selected_theme = self.theme_combobox.currentText()
