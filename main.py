@@ -4,14 +4,15 @@ import sys
 import requests
 import PyQt6
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
-    QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy
+    QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QListWidget,
+    QComboBox, QListWidgetItem, QGridLayout, QSizePolicy, QMessageBox
 )
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
 from PIL import Image, ImageQt
 
-#import: whatever asshole process i've had for the last 24 hours GPT LET ME FINSIH MY MOMS WOODLAND MANSION IN MINECRAFT XD
+#import my dinner to you, because you are amazing and loved :3 
+
 # Define the URL for the application icon
 icon_url = "https://raw.githubusercontent.com/duskfallcrew/Dataset-Tools/dev/icon.png"
 
@@ -81,10 +82,12 @@ class ImageTextEditor(QMainWindow):
         button_layout = QHBoxLayout()
         top_layout.addLayout(button_layout)
 
-        self.button_save = QPushButton("Save", clicked=self.save_text)
+        self.button_save = QPushButton("Save")
+        self.button_save.clicked.connect(self.save_text)
         button_layout.addWidget(self.button_save)
 
-        self.close_button = QPushButton("Close", clicked=self.close_app)
+        self.close_button = QPushButton("Close")
+        self.close_button.clicked.connect(self.close_app)
         button_layout.addWidget(self.close_button)
 
         # Middle layout for listbox and image gallery
@@ -104,7 +107,8 @@ class ImageTextEditor(QMainWindow):
         middle_layout.addWidget(gallery_container)
 
         # Image selection button
-        self.select_image_button = QPushButton("Select Image", clicked=self.select_image_from_gallery)
+        self.select_image_button = QPushButton("Select Image")
+        self.select_image_button.clicked.connect(self.select_image_from_gallery)
         main_layout.addWidget(self.select_image_button)
 
         # Theme selection combobox
@@ -240,6 +244,10 @@ class ImageTextEditor(QMainWindow):
         """)
         self.button_save.setStyleSheet(f"""
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+        """)
+       self.close_button.setStyleSheet(f"""
+            background-color: {self.current_theme["button_bg"]};
+            color: {self.current_theme["button_fg"]};
         """)
         self.close_button.setStyleSheet(f"""
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
