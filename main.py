@@ -11,11 +11,6 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap, QIcon
 
 
-#import my dinner to you, because you are amazing and loved :3 
-
-# Define the URL for the application icon
-icon_url = "https://raw.githubusercontent.com/duskfallcrew/Dataset-Tools/dev/icon.png"
-
 # Function to install required packages
 def install_packages():
     packages = ['pillow', 'numpy', 'matplotlib', 'PyQt6', 'requests']
@@ -68,6 +63,7 @@ class ImageTextEditor(QMainWindow):
         # Image display area
         self.image_label = QLabel(alignment=Qt.AlignmentFlag.AlignCenter)
         self.image_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.image_label.setScaledContents(True)  # Ensure image scales with QLabel
         top_layout.addWidget(self.image_label)
 
         # Text display and entry area
@@ -229,7 +225,7 @@ class ImageTextEditor(QMainWindow):
         """)
 
         # Save button
-        self.button_save.setStyleSheet(f"""
+                self.button_save.setStyleSheet(f"""
             background-color: {self.current_theme["button_bg"]};
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
@@ -392,4 +388,3 @@ if __name__ == "__main__":
     window = ImageTextEditor()
     window.show()
     sys.exit(app.exec())
-
