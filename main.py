@@ -148,6 +148,7 @@ class ImageTextEditor(QMainWindow):
 
     # Function to save edited text to file
     def save_text(self):
+        # Implementation of save_text method
         if hasattr(self, 'current_text_file') and self.current_text_file:
             new_text = self.text_box.toPlainText()
             with open(self.current_text_file, 'w') as file:
@@ -216,44 +217,38 @@ class ImageTextEditor(QMainWindow):
             self.image_gallery.addItem(item)
             self.image_gallery.setItemWidget(item, QLabel(os.path.basename(image)))
 
-    # Function to apply current theme colors to widgets
-    def apply_theme(self):
-        style_sheet = f"""
-            background-color: {self.current_theme["bg"]};
-            color: {self.current_theme["fg"]};
-        """
-        self.setStyleSheet(style_sheet)
-        self.image_label.setStyleSheet(style_sheet)
-        self.text_label.setStyleSheet(style_sheet)
-        self.text_box.setStyleSheet(f"""
-            background-color: {self.current_theme["text_bg"]};
-            color: {self.current_theme["text_fg"]};
-        """)
-        self.button_save.setStyleSheet(f"""
-            background-color: {self.current_theme["button_bg"]};
-            color: {self.current_theme["button_fg"]};
-        """)
-        self.close_button.setStyleSheet(f"""
-            background-color: {self.current_theme["button_bg"]};
-            color: {self.current_theme["button_fg"]};
-        """)
-        self.select_image_button.setStyleSheet(f"""
-            background-color: {self.current_theme["button_bg"]};
-            color: {self.current_theme["button_fg"]};
-        """)
-        self.button_save.setStyleSheet(f"""
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
-        """)
-        self.close_button.setStyleSheet(f"""
-            background-color: {self.current_theme["button_bg"]};
-            color: {self.current_theme["button_fg"]};
-        """)
-        self.close_button.setStyleSheet(f"""
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
-        """)
-        self.select_image_button.setStyleSheet(f"""
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
-        """)
+# Function to apply current theme colors to widgets
+def apply_theme(self):
+    style_sheet = f"""
+        background-color: {self.current_theme["bg"]};
+        color: {self.current_theme["fg"]};
+    """
+    self.setStyleSheet(style_sheet)
+    self.image_label.setStyleSheet(style_sheet)
+    self.text_label.setStyleSheet(style_sheet)
+
+    self.text_box.setStyleSheet(f"""
+        background-color: {self.current_theme["text_bg"]};
+        color: {self.current_theme["text_fg"]};
+    """)
+    
+    # Save button
+    self.button_save.setStyleSheet(f"""
+        background-color: {self.current_theme["button_bg"]};
+        color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+    """)
+    
+    # Close button
+    self.close_button.setStyleSheet(f"""
+        background-color: {self.current_theme["button_bg"]};
+        color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+    """)
+    
+    # Select image button
+    self.select_image_button.setStyleSheet(f"""
+        background-color: {self.current_theme["button_bg"]};
+        color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
+    """)
 
     # Function to handle changing themes
     def change_theme(self):
