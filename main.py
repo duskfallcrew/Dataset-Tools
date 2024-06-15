@@ -223,7 +223,6 @@ class ImageTextEditor(QMainWindow):
             color: {self.current_theme["fg"]};
         """
         self.setStyleSheet(style_sheet)
-
         self.image_label.setStyleSheet(style_sheet)
         self.text_label.setStyleSheet(style_sheet)
         self.text_box.setStyleSheet(f"""
@@ -394,7 +393,7 @@ themes = {
     #           "button_fg": "#6e5774",
     #       },
 }
-
+# Main exection just lets you know it's the main program, and that we're going to close it if you don't pay us money - I'm kidding.
 # Main execution
 if __name__ == "__main__":
     app = QApplication(sys.argv)
