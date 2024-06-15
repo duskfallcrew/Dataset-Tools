@@ -341,7 +341,6 @@ themes = {
         "button_bg": "#300507",
         "button_fg": "#000326",
           },
-       },
     "Pastel": {
         "bg": "#cdb4db",
         "fg": "#ffc8dd",
@@ -349,7 +348,7 @@ themes = {
         "text_fg": "#001b26",
         "button_bg": "#a2d2ff",
         "button_fg": "#f6f1ee",
-            },
+           },
     "Dark Wine": {
         "bg": "#231c35",
         "fg": "#242039",
@@ -357,7 +356,7 @@ themes = {
         "text_fg": "#484564",
         "button_bg": "#5b5271",
         "button_fg": "#6e5774",
-         },
+        },
     "Lavender": {
         "bg": "#e6e6fa",
         "fg": "black",
