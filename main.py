@@ -259,7 +259,6 @@ themes = {
         "text_fg": "black",
         "button_bg": "lightgrey",
         "button_fg": "black",
-
     },
     "Windows XP Inspired": {
         "bg": "lightblue",
@@ -285,7 +284,7 @@ themes = {
         "button_bg": "#5ba78a",
         "button_fg": "black",
     },
-           "Lavender": {
+    "Lavender": {
         "bg": "#e6e6fa",
         "fg": "black",
         "text_bg": "#d8bfd8",
@@ -340,7 +339,7 @@ themes = {
         "text_fg": "#001b26",
         "button_bg": "#300507",
         "button_fg": "#000326",
-          },
+    },
     "Pastel": {
         "bg": "#cdb4db",
         "fg": "#ffc8dd",
@@ -348,7 +347,7 @@ themes = {
         "text_fg": "#001b26",
         "button_bg": "#a2d2ff",
         "button_fg": "#f6f1ee",
-           },
+    },
     "Dark Wine": {
         "bg": "#231c35",
         "fg": "#242039",
@@ -356,17 +355,9 @@ themes = {
         "text_fg": "#484564",
         "button_bg": "#5b5271",
         "button_fg": "#6e5774",
-        },
-    "Lavender": {
-        "bg": "#e6e6fa",
-        "fg": "black",
-        "text_bg": "#d8bfd8",
-        "text_fg": "black",
-        "button_bg": "#d8bfd8",
-        "button_fg": "black",
-},
+    },
 }
-
+# Fixes an errror with indentation. Lets hope LOL!
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     editor = ImageTextEditor()
