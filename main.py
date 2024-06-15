@@ -39,7 +39,6 @@ def download_file(url, local_path):
     else:
         raise Exception(f"Failed to download file from {url}")
 
-# Main window class
 class ImageTextEditor(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -48,9 +47,7 @@ class ImageTextEditor(QMainWindow):
         self.setGeometry(100, 100, 1200, 900)
 
         self.current_theme = themes["Light Theme"]  # Start with Light Theme
- # Set window icon
-        self.setWindowIcon(QIcon("https://raw.githubusercontent.com/duskfallcrew/Dataset-Tools/dev/icon.png"))
-        
+
         self.init_ui()
         self.populate_listboxes()
         self.populate_image_gallery()  # Populate image gallery
@@ -130,102 +127,90 @@ class ImageTextEditor(QMainWindow):
         donation_link.setOpenExternalLinks(True)
         main_layout.addWidget(donation_link)
 
+    # Function to load and display image
+    def load_image(self, image_path):
+        image = Image.open(image_path)
+        pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
+        self.image_label.setPixmap(pixmap.scaled(
+            self.image_label.size(), Qt.AspectRatioMode.AspectFit
+        ))
 
-# Function to load and display image
-def load_image(self, image_path):
-    image = Image.open(image_path)
-    pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
-    self.image_label.setPixmap(pixmap.scaled(
-        self.image_label.size(), aspectRatioMode=Qt.AspectRatioMode.AspectFit
-    ))
+    # Function to load and display text from file
+    def load_text(self, text_path):
+        with open(text_path, 'r') as file:
+            text = file.read()
+        self.text_box.clear()  # Clear previous text
+        self.text_box.append(text)
 
+    # Function to save edited text to file
+    def save_text(self):
+        if hasattr(self, 'current_text_file') and self.current_text_file:
+            new_text = self.text_box.toPlainText()
+            with open(self.current_text_file, 'w') as file:
+                file.write(new_text)
 
-# Function to load and display text from file
-def load_text(self, text_path):
-    with open(text_path, 'r') as file:
-        text = file.read()
-    self.text_box.clear()  # Clear previous text
-    self.text_box.append(text)
+    # Function to handle selecting an image and associated text
+    def select_image(self):
+        image_path = self.file_listbox.currentItem().text()
+        if image_path:
+            self.current_image_path = image_path
+            self.current_text_file = os.path.splitext(image_path)[0] + '.txt'
+            self.load_image(image_path)
+            self.load_text_if_available(os.path.splitext(image_path)[0])
 
+    # Function to handle selecting an image from the gallery
+    def select_image_from_gallery(self):
+        selected_items = self.image_gallery.selectedItems()
+        if selected_items:
+            image_path = selected_items[0].data(Qt.ItemDataRole.UserRole)
+            self.current_image_path = image_path
+            self.current_text_file = os.path.splitext(image_path)[0] + '.txt'
+            self.load_image(image_path)
+            self.load_text_if_available(os.path.splitext(image_path)[0])
 
-# Function to save edited text to file
-def save_text(self):
-    if hasattr(self, 'current_text_file') and self.current_text_file:
-        new_text = self.text_box.toPlainText()
-        with open(self.current_text_file, 'w') as file:
-            file.write(new_text)
+    # Function to load text if available
+    def load_text_if_available(self, base_filename):
+        text_file = base_filename + '.txt'
+        if os.path.exists(text_file):
+            self.load_text(text_file)
+        else:
+            self.text_box.clear()  # Clear text box if no matching text file
 
+    # Function to list all image files in the current directory
+    def list_images_in_directory(self):
+        images = []
+        for file in os.listdir():
+            if file.lower().endswith(('.jpg', '.jpeg', '.png')):
+                images.append(file)
+        return images
 
-# Function to handle selecting an image and associated text
-def select_image(self):
-    image_path = self.file_listbox.currentItem().text()
-    if image_path:
-        self.current_image_path = image_path
-        self.current_text_file = os.path.splitext(image_path)[0] + '.txt'
-        self.load_image(image_path)
-        self.load_text_if_available(os.path.splitext(image_path)[0])
+    # Function to list all text files in the current directory
+    def list_text_files_in_directory(self):
+        text_files = []
+        for file in os.listdir():
+            if file.lower().endswith('.txt'):
+                text_files.append(file)
+        return text_files
 
+    # Function to close the application
+    def close_app(self):
+        QApplication.quit()  # Quit the application gracefully
 
-# Function to handle selecting an image from the gallery
-def select_image_from_gallery(self):
-    selected_items = self.image_gallery.selectedItems()
-    if selected_items:
-        image_path = selected_items[0].data(Qt.ItemDataRole.UserRole)
-        self.current_image_path = image_path
-        self.current_text_file = os.path.splitext(image_path)[0] + '.txt'
-        self.load_image(image_path)
-        self.load_text_if_available(os.path.splitext(image_path)[0])
+    # Function to populate listboxes with image and text files
+    def populate_listboxes(self):
+        self.text_file_listbox.clear()
 
+        text_files = self.list_text_files_in_directory()
+        self.text_file_listbox.addItems(text_files)
 
-# Function to load text if available
-def load_text_if_available(self, base_filename):
-    text_file = base_filename + '.txt'
-    if os.path.exists(text_file):
-        self.load_text(text_file)
-    else:
-        self.text_box.clear()  # Clear text box if no matching text file
-
-
-# Function to list all image files in the current directory
-def list_images_in_directory(self):
-    images = []
-    for file in os.listdir():
-        if file.lower().endswith(('.jpg', '.jpeg', '.png')):
-            images.append(file)
-    return images
-
-
-# Function to list all text files in the current directory
-def list_text_files_in_directory(self):
-    text_files = []
-    for file in os.listdir():
-        if file.lower().endswith('.txt'):
-            text_files.append(file)
-    return text_files
-
-
-# Function to close the application
-def close_app(self):
-    QApplication.quit()  # Quit the application gracefully
-
-
-# Function to populate listboxes with image and text files
-def populate_listboxes(self):
-    self.text_file_listbox.clear()
-
-    text_files = self.list_text_files_in_directory()
-    self.text_file_listbox.addItems(text_files)
-
-
-# Function to populate the image gallery
-def populate_image_gallery(self):
-    images = self.list_images_in_directory()
-    for index, image in enumerate(images):
-        item = QListWidgetItem(QIcon(image), os.path.basename(image))
-        item.setData(Qt.ItemDataRole.UserRole, image)
-        self.image_gallery.addItem(item)
-        self.image_gallery.setItemWidget(item, QLabel(os.path.basename(image)))
-
+    # Function to populate the image gallery
+    def populate_image_gallery(self):
+        images = self.list_images_in_directory()
+        for index, image in enumerate(images):
+            item = QListWidgetItem(QIcon(image), os.path.basename(image))
+            item.setData(Qt.ItemDataRole.UserRole, image)
+            self.image_gallery.addItem(item)
+            self.image_gallery.setItemWidget(item, QLabel(os.path.basename(image)))
 
     # Function to apply current theme colors to widgets
     def apply_theme(self):
@@ -269,7 +254,7 @@ def populate_image_gallery(self):
         self.current_theme = themes[selected_theme]
         self.apply_theme()
 
-# Define theme colors
+# Define theme colors - Themes not working currently are commented out, will be working on more eventually.
 themes = {
     "Light Theme": {
         "bg": "white",
