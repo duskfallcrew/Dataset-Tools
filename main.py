@@ -2,14 +2,14 @@ import os
 import subprocess
 import sys
 import requests
-import PyQt6
+from PIL import Image, ImageQt
+from PyQt6.QtCore import Qt, QSize, QFile, QTextStream
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QListWidget,
-    QComboBox, QListWidgetItem, QGridLayout, QSizePolicy, QMessageBox
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit,
+    QPushButton, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy, QMessageBox
 )
 from PyQt6.QtGui import QPixmap, QIcon
-from PyQt6.QtCore import Qt
-from PIL import Image, ImageQt
+
 
 #import my dinner to you, because you are amazing and loved :3 
 
