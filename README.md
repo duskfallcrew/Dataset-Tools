@@ -49,3 +49,11 @@ We are the Duskfall Portal Crew, a DID system with over 300 alters, navigating l
 [Reddit](https://www.reddit.com/r/earthndusk/)
 
 Thank you for being part of our journey and supporting the Earth and Dusk community. 
+
+# Credits
+
+ChatGPT 3.5 & 4o
+
+Support of my peers, and the community at Large..
+
+[Canvas icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/canvas)
