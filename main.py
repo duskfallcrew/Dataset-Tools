@@ -1,7 +1,7 @@
 import os
 import subprocess
 import sys
-import PyQt6
+import requests
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
     QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy
@@ -10,9 +10,12 @@ from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
 from PIL import Image, ImageQt
 
+# Define the URL for the application icon
+icon_url = "https://raw.githubusercontent.com/duskfallcrew/Dataset-Tools/dev/icon.png"
+
 # Function to install required packages
 def install_packages():
-    packages = ['pillow', 'numpy', 'matplotlib', 'PyQt6']
+    packages = ['pillow', 'numpy', 'matplotlib', 'PyQt6', 'requests']
     for package in packages:
         try:
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
@@ -29,7 +32,7 @@ class ImageTextEditor(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Image Text Editor")
+        self.setWindowTitle("Earth & Dusk: Image & Caption Editor")
         self.setGeometry(100, 100, 1200, 900)
 
         self.current_theme = themes["Light Theme"]  # Start with Light Theme
@@ -96,7 +99,7 @@ class ImageTextEditor(QMainWindow):
         # Theme selection combobox
         self.theme_combobox = QComboBox()
         self.theme_combobox.addItems(list(themes.keys()))
-        self.theme_combobox.setCurrentIndex(2)  # Set default theme
+        self.theme_combobox.setCurrentIndex(0)  # Set default theme
         self.theme_combobox.currentIndexChanged.connect(self.change_theme)
         main_layout.addWidget(self.theme_combobox)
 
@@ -236,7 +239,7 @@ class ImageTextEditor(QMainWindow):
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
 
-    # Function to handle changing themes
+# Function to handle changing themes
     def change_theme(self):
         selected_theme = self.theme_combobox.currentText()
         self.current_theme = themes[selected_theme]
@@ -374,10 +377,10 @@ themes = {
     },
 }
 
-# Run the application
+# Main execution
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    editor = ImageTextEditor()
-    editor.show()
+    window = ImageTextEditor()
+    window.show()
     sys.exit(app.exec())
 
