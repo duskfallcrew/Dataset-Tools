@@ -3,8 +3,38 @@ A script that in theory works to help you visualize your dataset, edit text.
 
 A script that in theory works to help you visualize your dataset, edit text. I'm aware i'm not the only one to make something like this, and i don't have anyone's code to go by other than what GPT gave me.  I am inspired by clearly my peers around me in Civitai, and i'm just trying to learn how to make tools to help the community!
 
-## Sample Images 
+## Overview of themes
 
+Beetlejuice Inspired
+
+Light Theme
+
+Dark Theme
+
+Pastel V2
+
+There was a Pastel V1, but it broke.
+
+There are SEVERAL commented themes in the code, i'm fixing text on those later.
+
+Night Sky
+
+Fire Red
+
+Sunset Orange
+
+Lavender
+
+Ocean Blue
+
+Mint 
+
+Forest Green
+
+If you'd like other color themes added, let me know - they're not hard to impliment, they're just hex codes and HTML/CSS - it's just the commented out ones have some issues I need to sort out with text colors - Later on i'll fix that, just I wanna get this pushed to main!
+
+## Sample Images 
+Here you can see the themes and gui overlook.
 ### GUI Overview
 <img width="1199" alt="Screenshot 2024-06-15 at 19 09 31" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/23cf71c2-2a4b-482c-81fd-c2b06f691da8">
 
