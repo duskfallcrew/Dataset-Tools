@@ -234,7 +234,6 @@ class ImageTextEditor(QMainWindow):
         self.show()
         sys.exit(app.exec())
 
-# Define colors for different themes
 themes = {
     "Beetlejuice Inspired": {
         "bg": "#202020",
@@ -357,7 +356,8 @@ themes = {
         "button_fg": "#6e5774",
     },
 }
-# Fixes an errror with indentation. Lets hope LOL!
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     editor = ImageTextEditor()
