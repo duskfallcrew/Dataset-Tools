@@ -244,7 +244,7 @@ class ImageTextEditor(QMainWindow):
         self.button_save.setStyleSheet(f"""
             color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
-       self.close_button.setStyleSheet(f"""
+        self.close_button.setStyleSheet(f"""
             background-color: {self.current_theme["button_bg"]};
             color: {self.current_theme["button_fg"]};
         """)
