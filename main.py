@@ -387,6 +387,7 @@ themes = {
 # Main exection just lets you know it's the main program, and that we're going to close it if you don't pay us money - I'm kidding.
 # Main execution
 if __name__ == "__main__":
+    import sys
     app = QApplication(sys.argv)
     window = ImageTextEditor()
     window.show()
