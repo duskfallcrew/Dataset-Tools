@@ -133,7 +133,7 @@ class ImageTextEditor(QMainWindow):
         image = Image.open(image_path)
         pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
         self.image_label.setPixmap(pixmap.scaled(
-            self.image_label.size(), Qt.AspectRatioMode.AspectFit
+            self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatioByExpanding
         ))
 
     # Function to load and display text from file
