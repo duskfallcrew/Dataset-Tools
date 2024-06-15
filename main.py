@@ -4,11 +4,12 @@ import sys
 import PyQt6
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
-    QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox
+    QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout
 )
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
 from PIL import Image, ImageQt
+
 
 # Function to install required packages
 def install_packages():
@@ -36,6 +37,7 @@ class ImageTextEditor(QMainWindow):
 
         self.init_ui()
         self.populate_listboxes()
+        self.populate_image_gallery()  # New: Populate image gallery
         self.apply_theme()
 
     def init_ui(self):
@@ -45,56 +47,64 @@ class ImageTextEditor(QMainWindow):
         # Layouts
         main_layout = QHBoxLayout(central_widget)
 
+        # Left side layout (image display and text entry)
+        left_layout = QVBoxLayout()
+        main_layout.addLayout(left_layout)
+
         # Image display area
         self.image_label = QLabel(alignment=Qt.AlignmentFlag.AlignCenter)
-        main_layout.addWidget(self.image_label)
+        left_layout.addWidget(self.image_label)
 
         # Text display and entry area
-        text_layout = QVBoxLayout()
-        main_layout.addLayout(text_layout)
-
         self.text_label = QLabel("Text:")
-        text_layout.addWidget(self.text_label)
+        left_layout.addWidget(self.text_label)
 
         self.text_box = QTextEdit()
-        self.text_box.setFixedHeight(200)  # Set fixed height
-        text_layout.addWidget(self.text_box)
+        left_layout.addWidget(self.text_box)
 
-        # Save button
+        # Save and Close buttons
+        button_layout = QHBoxLayout()
+        left_layout.addLayout(button_layout)
+
         self.button_save = QPushButton("Save", clicked=self.save_text)
-        text_layout.addWidget(self.button_save)
+        button_layout.addWidget(self.button_save)
 
-        # Close button
         self.close_button = QPushButton("Close", clicked=self.close)
-        text_layout.addWidget(self.close_button)
+        button_layout.addWidget(self.close_button)
+
+        # Right side layout (listboxes and theme selection)
+        right_layout = QVBoxLayout()
+        main_layout.addLayout(right_layout)
 
         # Listbox to display images
         self.file_listbox = QListWidget()
-        main_layout.addWidget(self.file_listbox)
+        right_layout.addWidget(self.file_listbox)
 
         # Listbox to display text files
         self.text_file_listbox = QListWidget()
-        main_layout.addWidget(self.text_file_listbox)
+        right_layout.addWidget(self.text_file_listbox)
+
+        # Image gallery
+        self.image_gallery = QListWidget()
+        right_layout.addWidget(self.image_gallery)
+
+        # Populate image gallery
+        self.populate_image_gallery()
 
         # Theme selection combobox
         self.theme_combobox = QComboBox()
         self.theme_combobox.addItems(list(themes.keys()))
         self.theme_combobox.setCurrentIndex(2)  # Set default theme
         self.theme_combobox.currentIndexChanged.connect(self.change_theme)
-        main_layout.addWidget(self.theme_combobox)
+        right_layout.addWidget(self.theme_combobox)
 
     # Function to load and display image
     def load_image(self, image_path):
         image = Image.open(image_path)
         pixmap = QPixmap.fromImage(ImageQt.ImageQt(image))
-        
-        # Resize image proportionally based on percentage
-        percentage = 80  # Adjust percentage as needed
-        width = pixmap.width() * percentage // 100
-        height = pixmap.height() * percentage // 100
-        pixmap = pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
-
-        self.image_label.setPixmap(pixmap)
+        self.image_label.setPixmap(pixmap.scaled(
+            self.image_label.size(), Qt.AspectRatioMode.KeepAspectRatio
+        ))
 
     # Function to load and display text from file
     def load_text(self, text_path):
@@ -105,7 +115,7 @@ class ImageTextEditor(QMainWindow):
 
     # Function to save edited text to file
     def save_text(self):
-        if hasattr(self, 'current_text_file') and self.current_text_file:
+        if self.current_text_file:
             new_text = self.text_box.toPlainText()
             with open(self.current_text_file, 'w') as file:
                 file.write(new_text)
@@ -157,6 +167,15 @@ class ImageTextEditor(QMainWindow):
 
         self.file_listbox.addItems(images)
         self.text_file_listbox.addItems(text_files)
+
+    # Function to populate the image gallery
+    def populate_image_gallery(self):
+        self.image_gallery.clear()
+
+        images = self.list_images_in_directory()
+        for image in images:
+            item = QListWidgetItem(QIcon(image), os.path.basename(image))
+            self.image_gallery.addItem(item)
 
     # Function to apply current theme colors to widgets
     def apply_theme(self):
@@ -225,6 +244,8 @@ themes = {
         "text_fg": "black",
         "button_bg": "lightgrey",
         "button_fg": "black",
+   
+
     },
     "Windows XP Inspired": {
         "bg": "lightblue",
@@ -250,7 +271,7 @@ themes = {
         "button_bg": "#5ba78a",
         "button_fg": "black",
     },
-        "Lavender": {
+           "Lavender": {
         "bg": "#e6e6fa",
         "fg": "black",
         "text_bg": "#d8bfd8",
