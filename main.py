@@ -4,7 +4,7 @@ import sys
 import PyQt6
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QFileDialog,
-    QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout
+    QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QComboBox, QListWidgetItem, QGridLayout, QSizePolicy
 )
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
@@ -52,6 +52,7 @@ class ImageTextEditor(QMainWindow):
 
         # Image display area
         self.image_label = QLabel(alignment=Qt.AlignmentFlag.AlignCenter)
+        self.image_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         top_layout.addWidget(self.image_label)
 
         # Text display and entry area
@@ -59,6 +60,7 @@ class ImageTextEditor(QMainWindow):
         top_layout.addWidget(self.text_label)
 
         self.text_box = QTextEdit()
+        self.text_box.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         top_layout.addWidget(self.text_box)
 
         # Save and Close buttons
@@ -82,6 +84,9 @@ class ImageTextEditor(QMainWindow):
         # Image gallery grid layout
         gallery_container = QWidget()
         self.gallery_layout = QGridLayout(gallery_container)
+        self.image_gallery = QListWidget()
+        self.image_gallery.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.gallery_layout.addWidget(self.image_gallery, 0, 0)  # Add gallery to grid layout
         middle_layout.addWidget(gallery_container)
 
         # Image selection button
@@ -94,6 +99,19 @@ class ImageTextEditor(QMainWindow):
         self.theme_combobox.setCurrentIndex(2)  # Set default theme
         self.theme_combobox.currentIndexChanged.connect(self.change_theme)
         main_layout.addWidget(self.theme_combobox)
+
+        # Links and Credits
+        discord_link = QLabel('<a href="https://discord.gg/5t2kYxt7An">Earth & Dusk Discord</a>')
+        discord_link.setOpenExternalLinks(True)
+        main_layout.addWidget(discord_link)
+
+        github_link = QLabel('<a href="https://github.com/duskfallcrew/Dataset-Tools">Duskfall Crew\'s GitHub</a>')
+        github_link.setOpenExternalLinks(True)
+        main_layout.addWidget(github_link)
+
+        donation_link = QLabel('<a href="https://ko-fi.com/duskfallcrew/">Donate to Duskfall Crew</a>')
+        donation_link.setOpenExternalLinks(True)
+        main_layout.addWidget(donation_link)
 
     # Function to load and display image
     def load_image(self, image_path):
@@ -174,12 +192,7 @@ class ImageTextEditor(QMainWindow):
     # Function to populate the image gallery
     def populate_image_gallery(self):
         images = self.list_images_in_directory()
-        self.image_gallery = QListWidget()
-        self.gallery_layout.addWidget(self.image_gallery, 0, 0)  # Add gallery to grid layout
-
         for index, image in enumerate(images):
-            row = index // 4
-            col = index % 4
             item = QListWidgetItem(QIcon(image), os.path.basename(image))
             item.setData(Qt.ItemDataRole.UserRole, image)
             self.image_gallery.addItem(item)
@@ -214,27 +227,47 @@ class ImageTextEditor(QMainWindow):
 
         # Ensure button text visibility
         self.button_save.setStyleSheet(f"""
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white"};
+            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
         self.close_button.setStyleSheet(f"""
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white"};
+            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
         self.select_image_button.setStyleSheet(f"""
-            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "#d8bfd8"] else "white"};
+            color: {"black" if self.current_theme["button_bg"] in ["white", "lightgrey", "lightblue", "lightgreen"] else "white"};
         """)
 
-    # Function to change theme
-    def change_theme(self, index):
+    # Function to handle changing themes
+    def change_theme(self):
         selected_theme = self.theme_combobox.currentText()
         self.current_theme = themes[selected_theme]
         self.apply_theme()
 
-    # Main function to run the application
-    def run(self):
-        self.show()
-        sys.exit(app.exec())
-
+# Define theme colors
 themes = {
+    "Light Theme": {
+        "bg": "white",
+        "fg": "black",
+        "text_bg": "white",
+        "text_fg": "black",
+        "button_bg": "lightgrey",
+        "button_fg": "black"
+    },
+    "Dark Theme": {
+        "bg": "black",
+        "fg": "white",
+        "text_bg": "black",
+        "text_fg": "white",
+        "button_bg": "darkgrey",
+        "button_fg": "white"
+    },
+    "Pastel Theme v2": {
+        "bg": "lightyellow",
+        "fg": "darkslateblue",
+        "text_bg": "lightyellow",
+        "text_fg": "darkslateblue",
+        "button_bg": "lightblue",
+        "button_fg": "darkslateblue"
+    },
     "Beetlejuice Inspired": {
         "bg": "#202020",
         "fg": "#80FF00",
@@ -242,22 +275,6 @@ themes = {
         "text_fg": "#80FF00",
         "button_bg": "#303030",
         "button_fg": "#80FF00",
-    },
-    "Dark Theme": {
-        "bg": "black",
-        "fg": "white",
-        "text_bg": "grey",
-        "text_fg": "white",
-        "button_bg": "darkgrey",
-        "button_fg": "white",
-    },
-    "Light Theme": {
-        "bg": "white",
-        "fg": "black",
-        "text_bg": "white",
-        "text_fg": "black",
-        "button_bg": "lightgrey",
-        "button_fg": "black",
     },
     "Windows XP Inspired": {
         "bg": "lightblue",
@@ -357,8 +374,10 @@ themes = {
     },
 }
 
-
+# Run the application
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     editor = ImageTextEditor()
-    editor.run()
+    editor.show()
+    sys.exit(app.exec())
+
