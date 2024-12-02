@@ -1,6 +1,8 @@
 # Dataset-Tools: Enhancing Dataset Visualization and Text Editing
 Dataset-Tools is a versatile script designed to assist in visualizing datasets and editing associated text files. Developed using PyQt6, it provides an intuitive graphical interface for managing images and their corresponding annotations. Inspired by tools within the Civitai community, this project aims to empower users in enhancing their dataset management capabilities.
 
+<img width="1201" alt="Screenshot 2024-12-02 at 21 34 51" src="https://github.com/user-attachments/assets/0665932e-4710-4687-b0ce-4e94f6e2a5cd">
+
 You're more than welcome to help develop this tool, I am not really a programmer, I am aware of this - I am doing tiny things with Chat GPT to further help my community! 
 
 ## How to Use Dataset-Tools
@@ -80,6 +82,7 @@ Thank you for supporting us on our journey and contributing to the Earth and Dus
 ## Credits
 ChatGPT 3.5 & 4o: Powering innovative solutions and creative endeavors.
 Canvas icons created by Freepik - Flaticon: Enhancing visual appeal and functionality.
+Claude - for literally reworking this.
 
 ## Sample Images 
 Here you can see the themes and gui overlook.
