@@ -358,23 +358,23 @@ class DatasetViewer(QMainWindow):
         except Exception as e:
             self.logger.error(f"Error loading caption: {e}")
 
-    def safe_save_text(self):
-        """Safely saves caption text"""
-        if not self.current_image:
-            return
-            
-        text_path = os.path.splitext(self.current_image)[0] + '.txt'
-        try:
-            with open(text_path, 'w', encoding='utf-8') as f:
-                f.write(self.text_edit.toPlainText())
-            
-            self.save_button.setText("✅ Saved!")
-            QTimer.singleShot(2000, lambda: self.save_button.setText("💾 Save"))
-            self.logger.info(f"Saved caption to: {text_path}")
-            
-        except Exception as e:
-            self.logger.error(f"Error saving caption: {e}")
-            self.statusBar().showMessage(f"Couldn't save caption: {str(e)}")
+def safe_save_text(self):
+    """Safely saves caption text"""
+    if not self.current_image:
+        return
+        
+    text_path = os.path.splitext(self.current_image)[0] + '.txt'
+    try:
+        with open(text_path, 'w', encoding='utf-8') as f:
+            f.write(self.text_edit.toPlainText())
+        
+        self.save_button.setText("Saved!")  # This is the correct way!
+        QTimer.singleShot(2000, lambda: self.save_button.setText("Save"))
+        self.logger.info(f"Saved caption to: {text_path}")
+        
+    except Exception as e:
+        self.logger.error(f"Error saving caption: {e}")
+        self.statusBar().showMessage(f"Couldn't save caption: {str(e)}")
     
     def next_image(self):
         """Move to next image"""
