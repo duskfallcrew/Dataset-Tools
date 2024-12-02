@@ -368,17 +368,6 @@ class DatasetViewer(QMainWindow):
             with open(text_path, 'w', encoding='utf-8') as f:
                 f.write(self.text_edit.toPlainText())
             
-            self.save_button.
-          def safe_save_text(self):
-        """Safely saves caption text"""
-        if not self.current_image:
-            return
-            
-        text_path = os.path.splitext(self.current_image)[0] + '.txt'
-        try:
-            with open(text_path, 'w', encoding='utf-8') as f:
-                f.write(self.text_edit.toPlainText())
-            
             self.save_button.setText("✅ Saved!")
             QTimer.singleShot(2000, lambda: self.save_button.setText("💾 Save"))
             self.logger.info(f"Saved caption to: {text_path}")
