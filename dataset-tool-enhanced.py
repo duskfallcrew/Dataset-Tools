@@ -1,8 +1,9 @@
 import os
 import sys
+import time
 from dataclasses import dataclass
 from typing import Optional, Dict
-from PyQt6.QtCore import Qt, QSize, QTimer  # Added QTimer here!
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QTextEdit, QPushButton, QListWidget, QComboBox,
@@ -184,10 +185,15 @@ class DatasetViewer(QMainWindow):
         image_extensions = ('.png', '.jpg', '.jpeg', '.gif', '.bmp')
         
         try:
-            for filename in os.listdir(self.current_folder):
-                if filename.lower().endswith(image_extensions):
-                    self.file_list.addItem(filename)
+            # Get list of files and sort them
+            files = sorted([f for f in os.listdir(self.current_folder) 
+                          if f.lower().endswith(image_extensions)])
             
+            # Add them to the list
+            for filename in files:
+                self.file_list.addItem(filename)
+            
+            # Update status with count
             status = f"Found {self.file_list.count()} images! ✨"
             self.path_label.setText(f"{self.current_folder}\n{status}")
             
@@ -233,11 +239,15 @@ class DatasetViewer(QMainWindow):
                 with open(caption_path, 'w', encoding='utf-8') as f:
                     f.write(self.text_edit.toPlainText())
                 self.save_btn.setText("✅ Saved!")
-                QTimer.singleShot(2000, lambda: self.save_btn.setText("💾 Save Changes"))
+                QApplication.processEvents()
+                time.sleep(1)
+                self.save_btn.setText("💾 Save Changes")
             except Exception as e:
                 print(f"Error saving caption: {e}")
                 self.save_btn.setText("❌ Error!")
-                QTimer.singleShot(2000, lambda: self.save_btn.setText("💾 Save Changes"))
+                QApplication.processEvents()
+                time.sleep(1)
+                self.save_btn.setText("💾 Save Changes")
     
     def setup_themes(self):
         """Set up color themes"""
