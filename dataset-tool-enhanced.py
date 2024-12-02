@@ -1,9 +1,9 @@
 import os
 import sys
-import time
+import time  # This is our new friend for the save feedback!
 from dataclasses import dataclass
 from typing import Optional, Dict
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import Qt, QSize  # See? No QTimer here anymore!
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QTextEdit, QPushButton, QListWidget, QComboBox,
