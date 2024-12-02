@@ -61,13 +61,17 @@ class DatasetViewer(QMainWindow):
         self.setWindowTitle("Dataset Viewer")
         self.setMinimumSize(self.config.window_width, self.config.window_height)
         self.init_ui()
-        self.setup_shortcuts()
         
         # Start monitoring
         self.setup_memory_monitor()
         
         # Load initial folder
         self.load_folder(self.current_folder)
+        
+        # Set up shortcuts LAST - after all methods are defined
+        self.setup_shortcuts()  # The key change is right here!
+
+    # Our other methods follow...
 
     def setup_logging(self) -> logging.Logger:
         """Sets up our logging system"""
