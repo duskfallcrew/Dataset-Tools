@@ -2,13 +2,12 @@ import os
 import sys
 from dataclasses import dataclass
 from typing import Optional, Dict
+from PyQt6.QtCore import Qt, QSize, QTimer  # Added QTimer here!
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
     QLabel, QTextEdit, QPushButton, QListWidget, QComboBox,
-    QScrollArea, QSplitter, QTabWidget, QSizePolicy, QFileDialog,
-    QTimer
+    QScrollArea, QSplitter, QTabWidget, QSizePolicy, QFileDialog
 )
-from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QPixmap, QIcon
 from PIL import Image, ImageQt
 
