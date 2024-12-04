@@ -2,20 +2,16 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Currently there's no "SECURTITY UPDATES" due to the flucation in development of this.
+but moving forward:
 
 | Version | Supported          |
 | ------- | ------------------ |
 | Newest   | :white_check_mark: |
-| ???  | :x:                |
-| ???   | :white_check_mark: |
-| < OLD DEV   | :x:                |
+| Repatchwork  | :white_check_mark:               |
+| DevClaude/Dev   | :x:              |
+| < OldVersions   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Use the issues and discussions tabs to report things, or visit our discord.
