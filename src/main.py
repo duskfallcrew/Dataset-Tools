@@ -1,3 +1,10 @@
+# At the top of main.py, add:
+from .ui.file_tree import FileTreeNavigator
+from .ui.metadata import MetadataPanel
+from .themes import ThemeManager
+from .utils.memory import get_memory_manager
+from .utils.image import ImageLoader
+from .logging.setup import get_logger
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, 
     QVBoxLayout, QHBoxLayout, QStatusBar,
