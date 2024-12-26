@@ -1,178 +1,98 @@
-# Dataset-Tools: Enhancing Dataset Visualization and Text Editing
-Dataset-Tools is a versatile script designed to assist in visualizing datasets and editing associated text files. Developed using PyQt6, it provides an intuitive graphical interface for managing images and their corresponding annotations. Inspired by tools within the Civitai community, this project aims to empower users in enhancing their dataset management capabilities.
+# Dataset-Tools: A Simple Dataset Viewer for AI Art
 
-<img width="1201" alt="Screenshot 2024-12-02 at 21 34 51" src="https://github.com/user-attachments/assets/0665932e-4710-4687-b0ce-4e94f6e2a5cd">
+Dataset-Tools is a desktop application designed to help users browse and manage their image and text datasets, particularly those used with AI art generation tools like Stable Diffusion. Developed using PyQt6, it provides a simple and intuitive graphical interface for browsing images, viewing metadata, and examining associated text prompts. This project is inspired by tools within the AI art community and aims to empower users in improving their dataset curation workflow.
 
-You're more than welcome to help develop this tool, I am not really a programmer, I am aware of this - I am doing tiny things with Chat GPT to further help my community! 
+<img width="797" alt="Screenshot of the Application" src="https://github.com/user-attachments/assets/7e14c542-482d-42f4-a9ae-4305c9e2c383" />
 
 ## How to Use Dataset-Tools
+
 ### Launching the Application
 
-Ensure Python is installed on your system.
-Clone or download the Dataset-Tools repository from GitHub.
-Setting Up Environment
+1.  Ensure Python is installed on your system.
+2.  Clone or download the Dataset-Tools repository from GitHub.
+3.  Install the required dependencies:
 
-### Install necessary dependencies using pip:
-Copy code
-pip install PyQt6 Pillow
-Running the Application
+    ```bash
+    pip install PyQt6 pypng
+    ```
 
-### Navigate to the directory where main.py is located.
-Run the application using Python:
-css
-Copy code
-python main.py
+4.  Navigate to the directory where `main.py` is located.
+5.  Run the application using Python:
+
+    ```bash
+    python main.py
+    ```
+
 ### User Interface Overview
 
-#### Main Window: The application window opens with options to view images, edit associated text, and select themes.
-Image Display: Images are displayed in the top section of the window with options for scaling and centering.
-Text Editor: Below the image, there's a text box for editing and saving text associated with the selected image.
-Listboxes: Lists images and text files available in the current directory.
-Buttons: Includes "Save" to save edited text, "Close" to exit the application gracefully, and "Select Image" to pick an image for editing.
-Managing Images and Text
+The application window has the following main components:
 
-#### Selecting Images: Click on an image in the listbox or gallery to display it in the main window.
-Editing Text: Edit the text in the text box. Use the "Save" button to save changes to the associated text file.
-Changing Themes
+*   **Current Folder:** Displays the path of the currently loaded folder.
+*   **Open Folder:** A button to select a folder containing images and text files.
+*   **Image List:** Displays a list of images and text files found in the selected folder.
+*   **Image Preview:** An area to display a selected image.
+*   **Metadata Box:** A text area to display the extracted metadata from the selected image (including Stable Diffusion prompt, settings, etc.).
+*   **Prompt Text:** A text label to display the prompt from the selected image.
+*   **Text File Content Area:** A text area to display the content of any associated text files.
 
-#### Theme Selection: Use the dropdown menu labeled "Theme Selection" to choose from available themes.
-Applying Themes: Themes change the background, text colors, and button styles to suit different preferences.
-Customizing Themes (Advanced)
+### Managing Images and Text
 
-#### Editing Themes: Modify or add themes in the themes dictionary within the main.py file. Each theme consists of background color (bg), foreground color (fg), text background (text_bg), text foreground (text_fg), button background (button_bg), and button foreground (button_fg).
-
-
-## Overview of Themes
-Dataset-Tools offers a range of themes to customize the interface according to user preferences:
-
-Beetlejuice Inspired
-Light Theme
-Dark Theme
-Pastel V2
-Night Sky
-Fire Red
-Sunset Orange
-Lavender
-Ocean Blue
-Mint
-Forest Green
-Some themes, like Pastel V1, are currently disabled due to issues with text colors, which are being addressed in ongoing development.
+*   **Selecting Images:** Click on an image or text file in the list to display its preview, metadata, and associated text content.
+*   **Viewing Metadata:** Metadata associated with the selected image is displayed on the text area, such as steps, samplers, seeds, and more.
+*   **Viewing Text:** The content of any text file associated with the selected image is displayed on the text box.
 
 ## Key Features
-Graphical User Interface (GUI): Designed initially with Tkinter and later migrated to PyQt6 for improved functionality and aesthetics.
-Image Gallery: Allows for browsing and selection of images within the dataset.
-Text Editing: Supports real-time editing and saving of associated text files.
-Theme Customization: Choose from various predefined themes to personalize the application's appearance.
+
+*   **Graphical User Interface (GUI):** Built with PyQt6 for a modern and cross-platform experience.
+*   **Image Previews:** Quickly view images in a dedicated preview area.
+*   **Metadata Extraction:** Extract and display relevant metadata from PNG image files, especially those generated from Stable Diffusion.
+*   **Text Viewing:** Display the content of text files.
+*   **Clear Layout:** A simple and intuitive layout, with list view on the left, and preview on the right.
+
 ## Future Developments
-Educational Resources: Planned video tutorials and comprehensive text guides to aid users in navigating Dataset-Tools effectively.
-Enhanced Theme Functionality: Ongoing improvements to themes, focusing on legibility and aesthetic appeal across different datasets.
-Deployment and Testing: Targeting broader compatibility across operating systems and screen resolutions to optimize user experience.
+
+*   **Thumbnail Generation:** Implement thumbnails for faster browsing.
+*   **JPEG Metadata:** Add support for extracting metadata from JPEG files.
+*   **Themes:** Introduce customizable themes for appearance.
+*   **Filtering/Sorting:** Options to filter and sort files.
+*   **Better User Experience:** Test on different operating systems and screen resolutions to optimize user experience.
+*   **Video Tutorials:** Create video tutorials to show users how to use the program.
+*   **Text Tutorials:** Create detailed tutorials in text and image to show the user how to use the program.
+
 ## About the Creator
+
 Dataset-Tools is developed by the Duskfall Portal Crew, a diverse system navigating life with DID, ADHD, Autism, and CPTSD. Our motivation stems from leveraging AI to promote inclusivity and mental health awareness. Join us in exploring identity and creative expression through technology.
 
 ## Join Our Community
-Website: Earth & Dusk Portal
-Discord: Join our Discord
-Backups: Hugging Face
-Support Us
-Send a Pizza: Buy us a pizza
-Subreddit: Reddit Community
-Thank you for supporting us on our journey and contributing to the Earth and Dusk community.
 
-## Credits
-ChatGPT 3.5 & 4o: Powering innovative solutions and creative endeavors.
-Canvas icons created by Freepik - Flaticon: Enhancing visual appeal and functionality.
-Claude - for literally reworking this.
-
-## Sample Images 
-Here you can see the themes and gui overlook.
-### GUI Overview
-<img width="1199" alt="Screenshot 2024-06-15 at 19 09 31" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/23cf71c2-2a4b-482c-81fd-c2b06f691da8">
-
-### Sample Themes
-
-<img width="1194" alt="Screenshot 2024-06-15 at 19 09 40" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/f8d762db-3f46-48ef-9e95-63c613b622ad">
-<img width="1196" alt="Screenshot 2024-06-15 at 19 09 48" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/32818e21-56ea-4e0d-86de-5d3085960e09">
-<img width="1197" alt="Screenshot 2024-06-15 at 19 10 27" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/c1452a29-3b90-493c-b9eb-9553fa2b4935">
-<img width="1202" alt="Screenshot 2024-06-15 at 19 10 36" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/295bf87c-f213-427c-ae42-55c60988ed96">
-
-### Errors to Fix
-<img width="1202" alt="Screenshot 2024-06-15 at 19 11 19" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/81948737-4c6d-4db1-9070-dfc66570ca4d">
-<img width="1198" alt="Screenshot 2024-06-15 at 19 11 31" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/9b064e53-17e9-4ddb-9e3f-91f49f2f644b">
-
-## Changelog
-
-Started with Tkinter Gui, but moved to PYQT6.
-
-Realized it needed more to it. 
-
-Added gallery, text editing, image preview.
-
-Text box list.
-
-Save, Close and Select Image. 
-
-Commented out themes that don't work. 
-
-Tried to add an icon.
-
-Fixing aspect ratio is ... well i'm on a retina 5k screen, so go figure. - This is because if you select a TALLER image it'll break and you can't close it or edit the text, i'm working on it.
-
-The OLDER file in this specific repo, as i'm finally merging to main will give you back some stuff btue the images are tiny. 
-
-Indentation issues are fixed. 
-
-### What the OLD FILE Looks like - and that's ok! 
-
-
-<img width="1388" alt="Screenshot 2024-06-15 at 16 56 14" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/27b6bfef-ef80-449a-b307-b842b91ec28f">
-
-
-
-## Coming Soon
-
-Video tutorial via youtube.
-
-Tutorial in text, images.
-
-Fixing themes where the text is just attrocious. That's my fault, sorry.
-
-When we're out of MAIN development mode, i want to try and get this as a homebrew cask, and figure out how to all that - we're just not ready yet.
-
-Get people to test it on different OS boxes, so we can decide WHAT sizing is best. 
-
-
-# About the Creator:
-We are the Duskfall Portal Crew, a DID system with over 300 alters, navigating life with DID, ADHD, Autism, and CPTSD. We believe in AI’s potential to break down barriers and enhance mental health, despite its challenges. Join us on our creative journey exploring identity and expression.
-
-## Join Our Community:
-
-### Website: 
+### Website:
 [End Media](https://www.end-media.org/)
 
-### Discord: 
+### Discord:
 [Join our Discord](https://discord.gg/5t2kYxt7An)
 
-### Backups: 
+### Backups:
 [Hugging Face](https://huggingface.co/EarthnDusk)
 
-### Support Us: 
+### Support Us:
 [Send a Pizza](https://www.end-media.org/)
 
 ### Subreddit:
 [Reddit](https://www.reddit.com/r/earthndusk/)
 
-Thank you for being part of our journey and supporting the Earth and Dusk community. 
+Thank you for being part of our journey and supporting the Earth and Dusk community.
 
-# Credits
+## Credits
 
-ChatGPT 3.5 & 4o
+*   ChatGPT 3.5 & 4o: Powering innovative solutions and creative endeavors.
+*   Support of my peers, and the community at Large.
+*   [Canvas icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/canvas)
+*   Inspired by [receyuki/stable-diffusion-prompt-reader](https://github.com/receyuki/stable-diffusion-prompt-reader)
 
-Support of my peers, and the community at Large..
+### Where we started from
 
-[Canvas icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/canvas)
+Here you can see some screenshots of previous versions of the application.
 
-#### Where we started from over 24 hours ago:
 <img width="459" alt="Screenshot 2024-06-14 at 22 00 40" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/9dc7f859-13d5-4e75-9f21-171648b3061e">
 <img width="464" alt="Screenshot 2024-06-14 at 22 09 01" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/dbfd0678-aff4-47f2-a23f-e7cfa14582ef">
 <img width="1202" alt="Screenshot 2024-06-15 at 00 03 47" src="https://github.com/duskfallcrew/Dataset-Tools/assets/58930427/a2e1b5bb-7ffc-43e9-8002-56aa977478f6">
