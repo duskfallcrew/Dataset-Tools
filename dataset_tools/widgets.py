@@ -1,6 +1,6 @@
 import os
 from PyQt6.QtCore import QThread, pyqtSignal
-
+from dataset_tools import logger
 
 class FileLoader(QThread):
     finished = pyqtSignal(list, list, str)

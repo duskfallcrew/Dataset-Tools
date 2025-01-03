@@ -1,3 +1,5 @@
+from dataset_tools.__init__ import logger
+
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -13,21 +15,10 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont, QPixmap
-from widgets import FileLoader
-import os
+from dataset_tools.widgets import FileLoader
 import imghdr
-from metadata_parser import parse_metadata
-import json
+from dataset_tools.metadata_parser import parse_metadata
 import re
-import logging
-
-log_level = "INFO"
-msg_init = None
-log_level = getattr(logging, log_level)
-logger = logging.getLogger(__name__)
-if msg_init is not None:
-    logger = logging.getLogger(__name__)
-    logger.info(msg_init)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -194,12 +185,12 @@ class MainWindow(QMainWindow):
 
         elif imghdr.what(file_path) in ['jpeg', 'jpg']:
             # Add support for jpeg here later.
-            print("no metadata support for jpeg yet")
+            logger.info("no metadata support for jpeg yet")
             metadata = None
         else:
            metadata = None
       except Exception as e:
-        print("Error loading metadata:", e)
+        logger.info("Error loading metadata:", e)
         metadata = None
 
       if metadata is not None:
@@ -213,7 +204,7 @@ class MainWindow(QMainWindow):
               if prompt_regex is not None:
                   self.prompt_text.setText(prompt_regex.group(1))
             except Exception as e:
-                print("Error getting prompt: ", e)
+                logger.info("Error getting prompt: ", e)
          else:
             self.prompt_text.setText("No Prompt found")
       else:

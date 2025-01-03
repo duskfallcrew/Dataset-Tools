@@ -13,12 +13,12 @@ Dataset-Tools is a desktop application designed to help users browse and manage 
 3.  In the Dataset-Tools folder, install the required dependencies:
 
     ```sh
-    pip install -r requirements.txt
+    pip install .
     ```
 4.  Run the application using Python:
 
     ```sh
-    python main.py
+    dataset-tools
     ```
 
 ### User Interface Overview
