@@ -10,16 +10,14 @@ Dataset-Tools is a desktop application designed to help users browse and manage 
 
 1.  Ensure Python is installed on your system.
 2.  Clone or download the Dataset-Tools repository from GitHub.
-3.  Install the required dependencies:
+3.  In the Dataset-Tools folder, install the required dependencies:
 
-    ```bash
-    pip install PyQt6 pypng
+    ```sh
+    pip install -r requirements.txt
     ```
+4.  Run the application using Python:
 
-4.  Navigate to the directory where `main.py` is located.
-5.  Run the application using Python:
-
-    ```bash
+    ```sh
     python main.py
     ```
 
