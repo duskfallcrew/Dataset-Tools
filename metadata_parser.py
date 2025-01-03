@@ -1,94 +1,123 @@
+
 import png
 import zlib
 import json
 import re
-def parse_metadata(file_path):
-    metadata = {}
-    formatted_text = ""
+import sys
+
+
+def open_png_header(file_path):
     try:
         with open(file_path, "rb") as f:
             png_data = f.read()
-        reader = png.Reader(bytes=png_data)
-        chunks = reader.chunks()
-        
+            reader = png.Reader(bytes=png_data)
+            chunks = reader.chunks()
+    except Exception as e:
+       print("Error reading png file: ", e)
+    else:
+        return chunks
+
+def interpret_metadata_chunk(chunks):
         text_chunk = b""
         for chunk_name, chunk_data in chunks:
             if chunk_name == b"tEXt" or chunk_name == b"iTXt":
-                try:
-                    if chunk_name == b"tEXt":
-                        key, value = chunk_data.split(b"\x00", 1)
-                    elif chunk_name == b"iTXt":
-                        key, compression_method, _, value = chunk_data.split(b"\x00", 3)
-                        if compression_method == b'\x00':
-                             # Try zlib decompression only if needed
-                             try:
-                                value = zlib.decompress(value)
-                             except Exception as e:
-                                print("Error decompressing: ", e)
-                                continue; # skip the rest of this loop iteration, and try the next one
-                    if key == b"parameters":
-                      text_chunk = value
-                      break # stop when you find it
-                except Exception as e:
-                    print("Error reading chunk: ", e)
+                if chunk_name == b"tEXt":
+                    key, value = chunk_data.split(b"\x00", 1)
+                elif chunk_name == b"iTXt":
+                    key, compression_method, _, value = chunk_data.split(b"\x00", 3)
+                    if compression_method == b'\x00':
+                        # Try zlib decompression only if needed
+                        try:
+                            value = zlib.decompress(value)
+                        except Exception as e:
+                            print("Error decompressing: ", e)
+                            continue; # skip the rest of this loop iteration, and try the next one
+                if key == b"parameters" or key == b"prompt":
+                    return value
 
-        if text_chunk:
-          try:
-            # Try to decode the value, it may contain utf8 or other encodings
-            text = text_chunk.decode('utf-8', errors='ignore')
-            print(f"Decoded text: {text}")
-          except Exception as e:
-            print("Error decoding: ", e)
-            return formatted_text
-          try:
-            # Regex to find the prompt and the json string:
-            m = re.search(r"^(.*?)?(?:Negative prompt: (.*?))?(?:\nSteps: (.*?))?(?:\nSampler: (.*?))?(?:\nSchedule type: (.*?))?(?:\nCFG scale: (.*?))?(?:\nSeed: (.*?))?(?:\nSize: (.*?))?(?:\nModel hash: (.*?))?(?:\nModel: (.*?))?(?:\nVAE hash: (.*?))?(?:\nVAE: (.*?))?(?:\nDenoising strength: (.*?))?(?:\nClip skip: (.*?))?(?:\nHashes: (.*?))?(?:\n.*)?$", text, re.MULTILINE)
-            if m is not None:
-              
-              formatted_text = ""
-              if m.group(1):
-                formatted_text += f"prompt: {m.group(1).strip()}\n"
-              if m.group(2):
-                  formatted_text += f"negative_prompt: {m.group(2).strip()}\n"
-              if m.group(3):
-                  formatted_text += f"steps: {m.group(3).strip()}\n"
-              if m.group(4):
-                  formatted_text += f"sampler: {m.group(4).strip()}\n"
-              if m.group(5):
-                 formatted_text += f"schedule_type: {m.group(5).strip()}\n"
-              if m.group(6):
-                  formatted_text += f"cfg_scale: {m.group(6).strip()}\n"
-              if m.group(7):
-                  formatted_text += f"seed: {m.group(7).strip()}\n"
-              if m.group(8):
-                formatted_text += f"size: {m.group(8).strip()}\n"
-              if m.group(9):
-                  formatted_text += f"model_hash: {m.group(9).strip()}\n"
-              if m.group(10):
-                  formatted_text += f"model: {m.group(10).strip()}\n"
-              if m.group(11):
-                  formatted_text += f"vae_hash: {m.group(11).strip()}\n"
-              if m.group(12):
-                  formatted_text += f"vae: {m.group(12).strip()}\n"
-              if m.group(13):
-                  formatted_text += f"denoising_strength: {m.group(13).strip()}\n"
-              if m.group(14):
-                  formatted_text += f"clip_skip: {m.group(14).strip()}\n"
-              if m.group(15):
-                formatted_text += f"hashes: {m.group(15).strip()}"
-              return formatted_text
-          except Exception as e:
-            print("Error parsing text", e)
-          try:
-            # try to load as json
-            metadata = json.loads(text)
-            formatted_text = ""
-            for key, value in metadata.items():
-                formatted_text += f"{key}: {value}\n"
-            return formatted_text
-
-          except Exception as e:
-              print("Error parsing json directly", e)
+def format_chunk(text_chunk):
+    """Try to decode the value, it may contain utf8 or other encodings"""
+    try:
+        text = text_chunk.decode('utf-8', errors='ignore')
     except Exception as e:
-       print("Error reading png file: ", e)
-    return formatted_text
+        print("Error decoding: ", e)
+    else:
+        if next(iter(text)) == "{":
+            formatted_text = text
+            json_text = load_as_json(formatted_text)
+        else:
+            json_text = parse_text(text)
+            #json_text = load_as_json(str(formatted_text))
+       # print(f"Decoded text: {json_text}")
+        return json_text
+
+def parse_text(text):
+    """Regex to find the prompt and the json string:"""
+
+    text_strip = text.strip()
+    text_prefix = text_strip.split('\n')
+    text_pos_prompt = text_prefix[0].split('POS')[1]
+    text_neg_prompt = text_prefix[1].split('Neg')[1]
+    hash_values = text_prefix[2]
+    regex_filter = dict(re.findall(r'(\w+):\s*(\d+(?:\.\d+)?)', str(text_prefix)))
+    return str({"positive": text_pos_prompt, "negative": text_neg_prompt, "parameters": regex_filter, "hash": hash_values})
+
+    # try:
+    #     metadata_values = re.search(
+    #         r"^(.*?)?(?:Negative prompt: (.*?))?(?:\nSteps: (.*?))?"
+    #         r"(?:\nSampler: (.*?))?(?:\nSchedule type: (.*?))?"
+    #         r"(?:\nCFG scale: (.*?))?(?:\nSeed: (.*?))?"
+    #         r"(?:\nSize: (.*?))?(?:\nModel hash: (.*?))?"
+    #         r"(?:\nModel: (.*?))?(?:\nVAE hash: (.*?))?"
+    #         r"(?:\nVAE: (.*?))?(?:\nDenoising strength: (.*?))?"
+    #         r"(?:\nClip skip: (.*?))?(?:\nHashes: (.*?))?",
+    #         text,
+    #         re.MULTILINE
+    #     )
+    # except Exception as e:
+    #     print("Error parsing text:", e)
+    #     return None
+
+    # if metadata_values is not None:
+    #     fields = [
+    #         ("prompt", 1),
+    #         ("negative_prompt", 2),
+    #         ("steps", 3),
+    #         ("sampler", 4),
+    #         ("schedule_type", 5),
+    #         ("cfg_scale", 6),
+    #         ("seed", 7),
+    #         ("size", 8),
+    #         ("model_hash", 9),
+    #         ("model", 10),
+    #         ("vae_hash", 11),
+    #         ("vae", 12),
+    #         ("denoising_strength", 13),
+    #         ("clip_skip", 14),
+    #         ("hashes", 15)
+    #     ]
+    #     formatted_text = "\n".join(
+    #         f"{field[0]}: {metadata_values.group(group).strip()}" for field, group in fields if metadata_values.group(group)
+    #         )
+    #     return formatted_text
+    # else:
+    #     return "No match found."
+
+def load_as_json(formatted_text):
+    """try to load as json"""
+    try:
+        metadata = json.loads(formatted_text)
+
+        for key, value in metadata.items():
+            formatted_text += f"{key}: {value}\n"
+    except Exception as e:
+        print("Error parsing json directly", e)
+    else:
+        return formatted_text
+
+def parse_metadata(file_name):
+    chunks = open_png_header(file_name)
+    text_chunk = interpret_metadata_chunk(chunks)
+    json_text = format_chunk(text_chunk)
+    #formatted_text = parse_text(text)
+    return json_text

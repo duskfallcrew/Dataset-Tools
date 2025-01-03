@@ -17,8 +17,17 @@ from widgets import FileLoader
 import os
 import imghdr
 from metadata_parser import parse_metadata
-import json # import json here
-import re # import re here
+import json
+import re
+import logging
+
+log_level = "INFO"
+msg_init = None
+log_level = getattr(logging, log_level)
+logger = logging.getLogger(__name__)
+if msg_init is not None:
+    logger = logging.getLogger(__name__)
+    logger.info(msg_init)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -79,7 +88,7 @@ class MainWindow(QMainWindow):
         self.image_preview.setMinimumHeight(300)
         right_layout.addWidget(self.image_preview)
 
-        
+
         # Metadata Box
         self.metadata_box = QTextEdit()
         self.metadata_box.setReadOnly(True)
@@ -102,14 +111,14 @@ class MainWindow(QMainWindow):
         self.image_list = []
         self.text_files = []
         self.current_folder = None
-    
+
     def open_folder(self):
         # Open a dialog to select the folder
         folder_path = QFileDialog.getExistingDirectory(self, "Select a folder")
         if folder_path:
             # Call the file loading function
             self.load_files(folder_path)
-    
+
     def clear_files(self):
       if self.file_loader:
          self.file_loader.clear_files()
@@ -176,12 +185,13 @@ class MainWindow(QMainWindow):
       if file_path.lower().endswith('.txt'):
         # Load the text file
         self.load_text_file(file_path)
-    
+
     def load_metadata(self, file_path):
       metadata = None
       try:
         if imghdr.what(file_path) == 'png':
              metadata = parse_metadata(file_path)
+
         elif imghdr.what(file_path) in ['jpeg', 'jpg']:
             # Add support for jpeg here later.
             print("no metadata support for jpeg yet")
@@ -191,7 +201,7 @@ class MainWindow(QMainWindow):
       except Exception as e:
         print("Error loading metadata:", e)
         metadata = None
-      
+
       if metadata is not None:
          self.metadata_box.setText(metadata)
 
@@ -209,13 +219,13 @@ class MainWindow(QMainWindow):
       else:
          self.metadata_box.setText("No metadata found")
          self.prompt_text.setText("No Prompt found")
-    
+
     def load_image_preview(self, file_path):
         # load image file
         pixmap = QPixmap(file_path)
         # scale the image
         self.image_preview.setPixmap(pixmap.scaled(self.image_preview.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
-    
+
     def load_text_file(self, file_path):
         try:
             with open(file_path, 'r') as f:
