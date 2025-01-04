@@ -1,11 +1,13 @@
-import sys
-from PyQt6.QtWidgets import QApplication
-from ui import MainWindow  # Import our main window class
-
+from importlib.metadata import version, PackageNotFoundError # setuptools-scm versioning
+try:
+    __version__ = version("dataset-tools")
+except PackageNotFoundError:
+    # package is not installed
+    pass
 
 import logging
+import logging
 from logging import Logger
-import rich
 import sys
 
 log_level = "INFO"
@@ -16,7 +18,7 @@ from rich.logging import RichHandler
 handler = RichHandler(console=Console(stderr=True))
 
 if handler is None:
-    handler = logging.StreamHandler(sys.stdout)  # same as print
+    handler = logging.StreamHandler(sys.stdout)
     handler.propagate = False
 
 formatter = logging.Formatter(
@@ -33,11 +35,4 @@ if msg_init is not None:
 
 log_level = getattr(logging, log_level)
 logger = logging.getLogger(__name__)
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow() # Initialize our main window.
-    window.show()
-    sys.exit(app.exec())
 

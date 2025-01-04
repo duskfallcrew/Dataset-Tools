@@ -1,0 +1,41 @@
+#
+[build-system]
+requires      = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataset-tools"
+description = "A script that in theory works to help you visualize your dataset, edit text"
+authors = [
+    { name = "The Duskfall Portal Crew", email = "Dataset-Tools@noreply.github.com" },
+]
+
+requires-python = ">= 3.10"
+license = { file = "LICENSE" }
+readme = "README.md"
+urls = { source = "https://github.com/duskfallcrew/Dataset-Tools" }
+dynamic = ["version"]
+keywords = [
+    "training",
+    "text",
+    "images",
+    "AI",
+    "editing",
+    "dataset",
+    "metadata",
+    "generative",
+    "art",
+]
+dependencies = ["PyQt6", "pypng", "rich", "pillow"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+dataset-tools = "dataset_tools.main:main"
+
+[tool.setuptools_scm]
+write_to = "_version.py"
+
+[tool.uv]
+dev-dependencies = ["pytest"]
