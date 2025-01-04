@@ -3,11 +3,11 @@ import unittest
 from unittest.mock import patch, mock_open, Mock
 import zlib
 
-from metadata_parser import open_png_header, extract_metadata_chunks
+from dataset_tools.metadata_parser import open_png_header, extract_metadata_chunks
 
 class TestParseMetadata(unittest.TestCase):
 
-    @patch('metadata_parser.open_png_header.png.Reader', 'chunks', return_value=[(b'tEXt', b'data')])
+    @patch('dataset_tools.metadata_parser.open_png_header.pngReader', 'chunks', return_value=[(b'tEXt', b'data')])
     def test_parse_metadata_success(self, chunks):
         mock_file = mock_open(read_data=b'\x89PNG\r\n\x1a\nIHDR...')
         with patch('builtins.open', mock_file, create=True):

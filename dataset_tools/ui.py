@@ -1,4 +1,8 @@
+from importlib import metadata
+from pprint import PrettyPrinter
+from xml.dom.minidom import parseString
 from dataset_tools.__init__ import logger
+import pprint
 
 from PyQt6.QtWidgets import (
     QMainWindow,
@@ -17,7 +21,7 @@ from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont, QPixmap
 from dataset_tools.widgets import FileLoader
 import imghdr
-from dataset_tools.metadata_parser import parse_metadata
+from dataset_tools.metadata_parser import parse_metadata, open_jpg_header
 import re
 
 class MainWindow(QMainWindow):
@@ -83,11 +87,13 @@ class MainWindow(QMainWindow):
         # Metadata Box
         self.metadata_box = QTextEdit()
         self.metadata_box.setReadOnly(True)
+        self.metadata_box.setMinimumWidth(400)
         right_layout.addWidget(self.metadata_box)
 
         # Prompt Text
         self.prompt_text = QLabel()
         self.prompt_text.setText("Prompt Info will show here")
+        self.prompt_text.setMinimumWidth(400)
         right_layout.addWidget(self.prompt_text)
 
 
@@ -159,57 +165,76 @@ class MainWindow(QMainWindow):
 
 
     def on_file_selected(self, item):
-      file_path = item.text()
-      self.message_label.setText(f"Selected {file_path}")
+        file_path = item.text()
+        self.message_label.setText(f"Selected {file_path}")
 
-      # Clear any previous selection
-      self.image_preview.clear()
-      self.text_content.clear()
-      self.prompt_text.clear()
-      self.metadata_box.clear()
+        # Clear any previous selection
+        self.image_preview.clear()
+        self.text_content.clear()
+        self.prompt_text.clear()
+        self.metadata_box.clear()
 
-      if file_path.lower().endswith(('.png','.jpg','.jpeg','.webp')):
-         # Load the image
-         self.load_image_preview(file_path)
-         self.load_metadata(file_path)
+        if file_path.lower().endswith(('.png','.jpg','.jpeg','.webp')):
+            # Load the image
+            self.load_image_preview(file_path)
+            metadata = self.load_metadata(file_path)
+            self.display_metadata(metadata, file_path)
 
-      if file_path.lower().endswith('.txt'):
-        # Load the text file
-        self.load_text_file(file_path)
+        if file_path.lower().endswith('.txt'):
+            # Load the text file
+            self.load_text_file(file_path)
 
     def load_metadata(self, file_path):
-      metadata = None
-      try:
-        if imghdr.what(file_path) == 'png':
-             metadata = parse_metadata(file_path)
-
-        elif imghdr.what(file_path) in ['jpeg', 'jpg']:
-            # Add support for jpeg here later.
-            logger.info("no metadata support for jpeg yet")
-            metadata = None
-        else:
-           metadata = None
-      except Exception as e:
-        logger.info("Error loading metadata:", e)
         metadata = None
+        try:
+            if imghdr.what(file_path) == 'png':
+                metadata = parse_metadata(file_path)
 
-      if metadata is not None:
-         self.metadata_box.setText(metadata)
+            elif imghdr.what(file_path) in ['jpeg', 'jpg']:
+                metadata = open_jpg_header(file_path)
 
-         # check if the formatted metadata contains `prompt`, otherwise ignore it.
-         if "prompt:" in metadata:
+        except IndexError as error_log:
+            logger.info(f"Unexpected list position, out of range error for metadata in {file_path} : {error_log}")
+            logger.debug(error_log)
+            metadata = None
+            pass
+        except UnboundLocalError as error_log:
+            logger.info(f"Variable not declared while extracting metadata from {file_path} : {error_log}")
+            logger.debug(error_log)
+            metadata = None
+            pass
+        except ValueError as error_log:
+            logger.info(f"Invalid dictionary formatting while extracting metadata from{file_path} : {error_log}")
+            logger.debug(error_log)
+            metadata = None
+            pass
+
+        else:
+            return metadata
+        return None
+
+    def display_metadata(self, metadata, file_path):
+        if metadata is not None:
+            prompt_keys = ['Positive prompt', 'Negative prompt']
             try:
-              # search for the string, and return it.
-              prompt_regex = re.search(r"prompt: (.*?)\n", metadata)
-              if prompt_regex is not None:
-                  self.prompt_text.setText(prompt_regex.group(1))
-            except Exception as e:
-                logger.info("Error getting prompt: ", e)
-         else:
-            self.prompt_text.setText("No Prompt found")
-      else:
-         self.metadata_box.setText("No metadata found")
-         self.prompt_text.setText("No Prompt found")
+                generation_data = "\n".join(f"{k}: {v}" for k, v in metadata.items() if k not in prompt_keys)
+                self.metadata_box.setText(pprint.pformat(generation_data))
+
+            except AttributeError as error_log:
+                logger.info(f"'items' attribute cannot be applied to type {type(metadata)} from {file_path, metadata}  : {error_log}")
+                logger.debug(error_log)
+                pass
+
+            try:
+                prompt_data = '\n'.join(f"{metadata.get(k)}" for k in metadata if k in prompt_keys)
+                self.text_content.setText(pprint.pformat(prompt_data))
+            except TypeError:
+                logger.info(f"Invalid data in prompt fields {type(metadata)} from {file_path, metadata}  : {error_log}")
+
+            except AttributeError as error_log:
+                logger.info(f"attribute cannot be applied to type {type(metadata)} from {file_path, metadata}  : {error_log}")
+                logger.debug(error_log)
+                pass
 
     def load_image_preview(self, file_path):
         # load image file
